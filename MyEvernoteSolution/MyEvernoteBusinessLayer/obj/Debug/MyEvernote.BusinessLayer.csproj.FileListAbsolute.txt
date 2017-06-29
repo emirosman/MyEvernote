@@ -1,0 +1,38 @@
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernoteBusinessLayer.dll.config
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernoteBusinessLayer.dll
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernoteBusinessLayer.pdb
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\EntityFramework.dll
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.DataAccessLayer.dll
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.Entities.dll
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.DataAccessLayer.pdb
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.DataAccessLayer.dll.config
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.Entities.pdb
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\EntityFramework.xml
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\obj\Debug\MyEvernote.BusinessLayer.csprojResolveAssemblyReference.cache
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\obj\Debug\MyEvernoteBusinessLayer.dll
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\obj\Debug\MyEvernoteBusinessLayer.pdb
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\FakeData.dll
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\FakeData.pdb
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.Common.dll
+C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.Common.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernoteBusinessLayer.dll.config
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernoteBusinessLayer.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernoteBusinessLayer.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\EntityFramework.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.Common.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.DataAccessLayer.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.Entities.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\FakeData.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.Common.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.DataAccessLayer.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.DataAccessLayer.dll.config
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\MyEvernote.Entities.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\EntityFramework.xml
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\bin\Debug\FakeData.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\obj\Debug\MyEvernote.BusinessLayer.csprojResolveAssemblyReference.cache
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\obj\Debug\MyEvernoteBusinessLayer.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernoteBusinessLayer\obj\Debug\MyEvernoteBusinessLayer.pdb

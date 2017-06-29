@@ -1,0 +1,139 @@
+﻿@using MyEvernote.Entities
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom CSS --><!--eklemek şart-->
+    <link href="~/Content/shop-homepage.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    @{ 
+        EvernoteUser user = null;
+        if(Session["login"] != null)
+        {
+            user = Session["login"] as EvernoteUser;
+        }
+    }
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Navbarın Header Kısmı -->
+            <div class="navbar-header">
+                @*linkleri açılır menü yapan zımbırtı*@
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Menü</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*Navbar Başlığı*@
+                <a class="navbar-brand" href="/Home/Index">My EverNote</a>
+            </div>
+            <!-- Navbarın içini doldur -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                @*soldan sağa kısım*@
+                <ul class="nav navbar-nav">
+                    @if(user!=null)
+                    {
+                        if(user.IsAdmin==true)
+                        {
+
+                           <li>
+                               <a href="#"><span class="glyphicon glyphicon-wrench">Admin Panel</span></a>
+                           </li>
+                        }
+                    }
+                    <li>
+                        <a href="/Home/MostLiked"><span class="glyphicon glyphicon-star">En Beğenilen</span></a>
+                    </li>
+                    <li>
+                        <a href="/Home/Index"> <span class="glyphicon glyphicon-pushpin">Son Yazılan</span></a>
+                    </li>
+                    <li>
+                        <a href="/Home/About"><span class="glyphicon glyphicon-info-sign">Hakkımızda</span></a>
+                    </li>
+
+                </ul>
+                @*sağdan sola kısım*@
+                <ul class="nav navbar-nav navbar-right">
+                    @if(user==null)
+                    {
+                    <li>
+                        <a href="/Home/Register"><span class="glyphicon glyphicon-plus">Üye Ol</span></a>
+                    </li>
+                    <li>
+                        <a href="/Home/Login"><span class="glyphicon glyphicon-log-in">Giriş</span></a>
+                    </li>
+                    }
+                    else
+                    {
+
+                    <li>
+                        <a href="/Home/ShowProfile"><span class="glyphicon glyphicon-user">@(user.Name+" "+user.Surname)</span></a>
+                    </li>
+                    <li>
+                        <a href="/Home/Logout"><span class="glyphicon glyphicon-off">Çıkış</span></a>
+                    </li>
+                    }
+                </ul>
+
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+   
+    @RenderBody();
+
+    <!-- /Footer's.container -->
+    <div class="container">
+        <hr>
+        <!-- Footer 3e bölündü-->
+        <footer>
+            @*site altı bilgi linkleri*@
+            <div class="col-md-12" @*"row text-center"*@>
+                <div class="col-lg-4 col-xs-4 text-center">
+                    <p>Information linkleri</p><hr />
+                    <a>TTT</a><br />
+                    <a>TTT</a><br />
+                    <a>TTT</a><br />
+                </div>
+                @*kopiRayt!*@
+                <div class="col-md-4 col-xs-4 text-center"> 
+                    <p>Copyright &copy; My EverNote @DateTime.Now.Year</p><hr />
+                </div>
+                @*E Bülten*@
+                <div class="col-lg-4 col-xs-4 text-center"> 
+                    <p>E Bülten</p><hr />
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="@("e-posta@...")">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-send">Gönder</span></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- /Footer's.container end -->
+
+</body>
+</html>

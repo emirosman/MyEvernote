@@ -1,0 +1,25 @@
+﻿@using MyEvernoteBusinessLayer
+@using MyEvernote.Entities
+@{ 
+    CategoryManager cm = new CategoryManager();//cm ile getcategories ve getcategoriesbyid fonksiyonlarını kullanabiliyosun
+    List<Category> list = cm.GetCategories();
+}
+    <p class="lead">Kategori</p>
+    <div class="list-group">
+        <a href="/Home/Index" class="list-group-item"><span class="glyphicon glyphicon-arrow-right">Tümü</span></a>
+
+        @foreach (Category cat in list)
+        {
+            <a href="/Home/ByCategory/@cat.Id" title="@(cat.Description)" class="list-group-item"><span class="glyphicon glyphicon-arrow-right">@(cat.Title)</span></a>
+        }
+
+        @*<a href="#" class="list-group-item">Category 2</a>*@
+    </div>
+
+@*@using MyEvernote.Entities
+@model list<Note>
+
+@foreach (Note x in Model)
+{
+    Bu şekilde indexte kullanabiliyorum ama kategori listelemek için yemiyo list şeklinde modele bağırıyo ?????????
+}*@
