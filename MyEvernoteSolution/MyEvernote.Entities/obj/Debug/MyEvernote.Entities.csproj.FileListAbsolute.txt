@@ -3,3 +3,8 @@ C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernote.Entities\bin\De
 C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernote.Entities\bin\Debug\MyEvernote.Entities.pdb
 C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernote.Entities\obj\Debug\MyEvernote.Entities.dll
 C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernote.Entities\obj\Debug\MyEvernote.Entities.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Entities\bin\Debug\MyEvernote.Entities.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Entities\bin\Debug\MyEvernote.Entities.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Entities\obj\Debug\MyEvernote.Entities.csprojResolveAssemblyReference.cache
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Entities\obj\Debug\MyEvernote.Entities.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Entities\obj\Debug\MyEvernote.Entities.pdb

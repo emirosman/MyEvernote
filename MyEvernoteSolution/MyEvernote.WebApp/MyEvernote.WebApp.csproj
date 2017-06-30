@@ -106,9 +106,15 @@
     <Content Include="Images\Carousel\c1.jpg" />
     <Content Include="Images\Carousel\c2.jpg" />
     <Content Include="Images\Carousel\c3.jpg" />
+    <Content Include="Images\Notes\resim4.jpg" />
+    <Content Include="Images\Notes\resim5.jpg" />
+    <Content Include="Images\Notes\resim6.jpg" />
     <Content Include="Images\Notes\resim2.jpg" />
     <Content Include="Images\Notes\resim1.jpg" />
     <Content Include="Images\Notes\resim3.jpg" />
+    <Content Include="Images\Notes\resim7.jpg" />
+    <Content Include="Images\Notes\resim8.jpg" />
+    <Content Include="Images\Notes\resim9.jpg" />
     <Content Include="Images\Users\IMG_3332.JPG" />
     <Content Include="Images\Users\user.png" />
     <Content Include="index.html" />

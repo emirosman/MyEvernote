@@ -85,5 +85,36 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
             }
             return res;
         }
+
+        public BusinessLayerResult<EvernoteUser> UpdateProfile(EvernoteUser model)
+        {
+            BusinessLayerResult<EvernoteUser> update_result = new BusinessLayerResult<EvernoteUser>();
+            EvernoteUser user = repo_user.Find(x => x.Email == model.Email);
+
+            user = repo_user.Find(x => (x.Email == model.Email && x.Id != model.Id));
+            if(user!=null)
+            {
+                update_result.Errors.Add("Bu mail zaten kullanılıyo!");
+                return update_result;
+                
+            }
+            else
+            {
+                user = repo_user.Find(x => x.Id == model.Id);
+                user.Name = model.Name;
+                user.Surname = model.Surname;
+                user.Email = model.Email;
+                user.Password = model.Password;
+                user.ProfileImageFilename = model.ProfileImageFilename;
+                repo_user.Update(user);
+                update_result.Result = repo_user.Find(x => x.Id == user.Id) ;
+            }
+
+            
+
+            return update_result;
+
+        }
+        
     }
 }

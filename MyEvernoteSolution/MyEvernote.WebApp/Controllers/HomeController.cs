@@ -3,6 +3,7 @@ using MyEvernote.Entities.ValueObjects;
 using MyEvernoteBusinessLayer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -140,17 +141,51 @@ namespace MyEvernote.WebApp.Controllers
         }
         public ActionResult EditProfile()
         {
-            return View();
+            EvernoteUser user = Session["login"] as EvernoteUser;
+            UserManager eum = new UserManager();
+            BusinessLayerResult<EvernoteUser> res = eum.GetUserById(user.Id);
+            if (res.Errors.Count > 0)
+            {
+                //Hata ekranı verilicek
+            }
+            return View(res.Result);
         }
         [HttpPost]
-        public ActionResult EditProfile(EvernoteUser user)
+        public ActionResult EditProfile(EvernoteUser model,HttpPostedFileBase ProfileImage)//hata yok ama kayıtlar güncellenmiyo debug debug bak
         {
+            //resim yüklemesi
+               foreach(string upload in Request.Files)
+               {
+                   ProfileImage = Request.Files[upload];
+               }
+               if((ProfileImage != null) &&
+                       (ProfileImage.ContentType== "image/jpeg" ||
+                       ProfileImage.ContentType=="image/jpg"||
+                       ProfileImage.ContentType=="image/png"))
+               {
+                   string filename = $"user_{model.Id}.{ ProfileImage.ContentType.Split('/')[1]}";
+                   model.ProfileImageFilename = filename;
+                   string path = Path.Combine(Server.MapPath(("~/Images/Users/" + filename).ToString()));// başınsa / koyup dene!!!
+                   ProfileImage.SaveAs(path);
+               }
+            UserManager eum = new UserManager();
+            BusinessLayerResult<EvernoteUser> res = eum.UpdateProfile(model);
+            if(res.Errors.Count>0)
+            {
+                res.Errors.ForEach(x => ModelState.AddModelError("", x));
+                return View(model);
+                //hata kodları gelicek
+            };
+            Session["login"] = res.Result;
+            return RedirectToAction("ShowProfile");
+
+
             return View();
         }
 
         public ActionResult RemoveProfile()
         {
-            return View();
+            return View("Index");
         }
 
     }

@@ -109,19 +109,19 @@
         <!-- Footer 3e bölündü-->
         <footer>
             @*site altı bilgi linkleri*@
-            <div class="col-md-12" @*"row text-center"*@>
-                <div class="col-lg-4 col-xs-4 text-center">
+            @*<div class="container"*@ @*"row text-center">*@
+                <div class="col-lg-4 col-xs-8 col-sm-4 text-center">
                     <p>Information linkleri</p><hr />
                     <a>TTT</a><br />
                     <a>TTT</a><br />
                     <a>TTT</a><br />
                 </div>
                 @*kopiRayt!*@
-                <div class="col-md-4 col-xs-4 text-center"> 
+                <div class="col-md-4 col-xs-8 col-sm-4 text-center"> 
                     <p>Copyright &copy; My EverNote @DateTime.Now.Year</p><hr />
                 </div>
                 @*E Bülten*@
-                <div class="col-lg-4 col-xs-4 text-center"> 
+                <div class="col-lg-4 col-xs-8 col-sm-4 text-center"> 
                     <p>E Bülten</p><hr />
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="@("e-posta@...")">
@@ -130,7 +130,8 @@
                         </span>
                     </div>
                 </div>
-            </div>
+            @*</div>*@
+           
         </footer>
     </div>
     <!-- /Footer's.container end -->

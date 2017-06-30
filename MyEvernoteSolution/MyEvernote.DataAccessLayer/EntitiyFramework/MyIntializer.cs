@@ -94,7 +94,7 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
                         IsDraft = false,
                         LikeCount = FakeData.NumberData.GetNumber(1, 9),
                         Owner =note_owner,
-                        ImagePath="resim"+ FakeData.NumberData.GetNumber(1, 4).ToString()+".jpg",
+                        ImagePath="resim"+ FakeData.NumberData.GetNumber(1, 10).ToString()+".jpg",
                         CratedOn = FakeData.DateTimeData.GetDatetime(DateTime.Now.AddYears(-1), DateTime.Now),
                         ModifiedOn = FakeData.DateTimeData.GetDatetime(DateTime.Now.AddYears(-1), DateTime.Now),
                         ModifiedUsername = note_owner.Username
