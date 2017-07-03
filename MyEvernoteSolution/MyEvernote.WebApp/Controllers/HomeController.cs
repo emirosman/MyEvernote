@@ -135,7 +135,8 @@ namespace MyEvernote.WebApp.Controllers
             BusinessLayerResult<EvernoteUser> res = eum.GetUserById(user.Id);
             if(res.Errors.Count>0)
             {
-                //Hata ekranı verilicek
+                res.Errors.ForEach(x => ModelState.AddModelError("", x));
+                return View(res.Result);
             }
             return View(res.Result);
         }
@@ -179,13 +180,20 @@ namespace MyEvernote.WebApp.Controllers
             Session["login"] = res.Result;
             return RedirectToAction("ShowProfile");
 
-
-            return View();
         }
 
         public ActionResult RemoveProfile()
         {
-            return View("Index");
+            EvernoteUser currentUser = Session["login"] as EvernoteUser;
+            UserManager eum = new UserManager();
+            BusinessLayerResult<EvernoteUser> res = eum.RemoveById(currentUser.Id);//gittiği fonksiyon önce kullanıcının ilişkili olduğu verileri sonra kullanıcıyı siliyo
+            if(res.Errors.Count>0)//silinmediyse hataları bas
+            {
+                res.Errors.ForEach(x => ModelState.AddModelError("", x));
+                return View(res);
+            }
+            Session.Clear();//silindiyse session ı boşalt
+            return RedirectToAction("Index");
         }
 
     }

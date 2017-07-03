@@ -64,9 +64,28 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
                     ModifiedOn = FakeData.DateTimeData.GetDatetime(DateTime.Now.AddYears(-1), DateTime.Now),
                     ModifiedUsername = $"fake{i}"
                 };
+               
+                
                 context.EvernotUsers.Add(User);
             }
-            
+            //silme kontrolü yapmak için yorumu beğenisi notu olmayan bi kullanıcı eklendi 
+            EvernoteUser DeleteUser = new EvernoteUser()
+            {
+                Name = "Silinecek",
+                Surname = "Kullanıcı",
+                Email = FakeData.NetworkData.GetEmail(),
+                ActivateGuid = Guid.NewGuid(),
+                IsActive = true,
+                IsAdmin = false,
+                Username = "delete",
+                Password = "123456",
+                ProfileImageFilename = "user.png",
+                CratedOn = DateTime.Now,
+                ModifiedOn = DateTime.Now.AddMinutes(8),
+                ModifiedUsername = "fake"
+            };
+            context.EvernotUsers.Add(DeleteUser);
+
             context.SaveChanges();
             List<EvernoteUser> userlist = context.EvernotUsers.ToList();
 

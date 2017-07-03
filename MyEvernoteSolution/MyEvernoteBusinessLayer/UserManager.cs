@@ -12,6 +12,9 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
     public class UserManager
     {
         private Repository<EvernoteUser> repo_user = new Repository<EvernoteUser>();
+        private Repository<Comment> repo_comment = new Repository<Comment>();
+        private Repository<Liked> repo_like = new Repository<Liked>();
+        private Repository<Note> repo_note = new Repository<Note>();
 
         public BusinessLayerResult<EvernoteUser> RegisterUser(RegisterViewModel data)
         {
@@ -115,6 +118,55 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
             return update_result;
 
         }
-        
+        public BusinessLayerResult<EvernoteUser> RemoveById(int id)
+        {
+            //Kullanıcıyı silmek için önce ilişkili olduğu notları yorumları beğenileri silip daha sonra kullanıcıyı siliyoruz
+            BusinessLayerResult<EvernoteUser> res = new BusinessLayerResult<EvernoteUser>();
+            
+            EvernoteUser user = repo_user.Find(x => x.Id == id);
+            List<Comment> deleteComment = repo_comment.List(x => x.Owner.Id == id || x.Note.Owner.Id==id);//siliceğimiz kişinin yorumuysa veya siliceğimiz kişinin notuna yapılan yorumsa sil
+            foreach(Comment sil in deleteComment)
+            {
+                if(repo_comment.Delete(sil)==0)
+                {
+                    res.Errors.Add("Yorum Silme işlemi başarısız!");
+                    return res;
+                }
+            }
+            List<Liked> deleteLike = repo_like.List(x => x.LikedUser.Id == id||x.Note.Owner.Id==id);//kullanıcının beğenisiyse yada kullanıcının notuna yapılan beğeniyse sil 
+            foreach (Liked sil_like in deleteLike)
+            {
+                if (repo_like.Delete(sil_like) == 0)
+                {
+                    res.Errors.Add("Yorum Silme işlemi başarısız!");
+                    return res;
+                }
+            }
+            List<Note> deleteNote = repo_note.List(x => x.Owner.Id == id);//kullanıcının notuysa sil
+            foreach (Note sil_note in deleteNote)
+            {
+                if(repo_note.Delete(sil_note)==0)
+                {
+                    res.Errors.Add("Yorum Silme işlemi başarısız!");
+                    return res;
+                }
+            }
+           
+            if (user!=null)
+            {
+                if(repo_user.Delete(user)==0)//ilişkili veriler gittikten sonra kullanıcıyı sil 
+                {
+                    res.Errors.Add("Silme işlemi başarısız!");
+                    return res;
+                }
+            }
+            else
+            {
+                res.Errors.Add("Kullanıcı bulunamadı");
+            }
+            return res;
+        }
+
+
     }
 }
