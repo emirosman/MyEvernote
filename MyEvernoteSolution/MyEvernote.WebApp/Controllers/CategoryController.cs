@@ -46,7 +46,7 @@ namespace MyEvernote.WebApp.Controllers
         // POST: Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( Category category)
+        public ActionResult Create( Category category)//db de olan kategoriyi tekrar ekleyebiliyo kontrol et
         {
             if (ModelState.IsValid)
             {

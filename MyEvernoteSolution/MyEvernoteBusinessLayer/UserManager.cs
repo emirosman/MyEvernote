@@ -58,6 +58,41 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
             return layer_result;//fonksiyonun dönüştipi EvernoteUser ! BLR olmadığı için aktarmak zorunda kaldık , BLR ta inserte bırakılan 3 değişken yok buda bi sebep
         }
 
+        public BusinessLayerResult<EvernoteUser> CreateUser(EvernoteUser data)
+        {
+            BusinessLayerResult<EvernoteUser> layer_result = new BusinessLayerResult<EvernoteUser>();
+            EvernoteUser user = Find(x => x.Username == data.Username || x.Email == data.Email);//username yada mail daha önceden eklenmişse ilk if çalışıcak
+
+            if (user != null)
+            {
+                if (user.Username == data.Username)
+                {
+                    layer_result.Errors.Add("Kullanıcı Adı daha önceden kaydedilmiş!");
+                }
+                if (user.Email == data.Email)
+                {
+                    layer_result.Errors.Add("E-posta daha önceden kaydedilmiş!");
+                }
+
+            }
+            else//bilgilerde problem yoksa insert yapılıcak yer 
+            {
+                layer_result.Result = Find(x => x.Email == data.Email && x.Username == data.Username);
+
+                data.ActivateGuid = Guid.NewGuid();
+                if (data.ProfileImageFilename == null)
+                    data.ProfileImageFilename = "user.png";
+                int db_result = Insert(data);
+                if (db_result > 0 && data.IsActive==false)
+                {
+                    //aktivasyon maili atılacak
+                    //layer_result.Result.ActivateGuid
+                }
+            }
+            return layer_result;//fonksiyonun dönüştipi EvernoteUser ! BLR olmadığı için aktarmak zorunda kaldık , BLR ta inserte bırakılan 3 değişken yok buda bi sebep
+        }
+
+
         public BusinessLayerResult<EvernoteUser> LoginUser(LoginViewModel data)
         {
             BusinessLayerResult<EvernoteUser> layer_result = new BusinessLayerResult<EvernoteUser>();
@@ -93,8 +128,15 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
         public BusinessLayerResult<EvernoteUser> UpdateProfile(EvernoteUser model)
         {
             BusinessLayerResult<EvernoteUser> update_result = new BusinessLayerResult<EvernoteUser>();
-            EvernoteUser user = Find(x => x.Email == model.Email);
+            EvernoteUser user = new EvernoteUser();
 
+            user = Find(x => (x.Username == model.Username && x.Id != model.Id));
+            if (user != null)
+            {
+                update_result.Errors.Add("Bu Kullanıcı Adızaten kullanılıyo!");
+                return update_result;
+
+            }
             user = Find(x => (x.Email == model.Email && x.Id != model.Id));
             if(user!=null)
             {
@@ -104,14 +146,26 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
             }
             else
             {
+                //user = Find(x => x.Id == model.Id);
+                //user.Name = model.Name;
+                //user.Surname = model.Surname;
+                //user.Email = model.Email;
+                //user.Password = model.Password;
+                //user.ProfileImageFilename = model.ProfileImageFilename;
+                //Update(user);
+                //update_result.Result =Find(x => x.Id == user.Id) ;
+                //////////////////////////////
                 user = Find(x => x.Id == model.Id);
-                user.Name = model.Name;
-                user.Surname = model.Surname;
                 user.Email = model.Email;
+                user.Username = model.Username;
+                user.IsActive = model.IsActive;
+                user.IsAdmin = model.IsAdmin;
+                user.Name = model.Name;
                 user.Password = model.Password;
                 user.ProfileImageFilename = model.ProfileImageFilename;
+                user.Surname = model.Surname;
                 Update(user);
-                update_result.Result =Find(x => x.Id == user.Id) ;
+                update_result.Result = Find(x => x.Id == user.Id);
             }
 
             

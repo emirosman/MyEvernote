@@ -1,0 +1,95 @@
+﻿@using MyEvernote.Entities
+@model List<Liked>
+@{
+    ViewBag.Title = "LikeIndex";
+}
+
+<h2>LikeIndex</h2>
+
+@foreach(Liked i in Model)
+{
+    <p>@(i.Note.Id)--@(i.Note.Title)</p>
+}
+
+
+<div class="row col-md-9 col-sm-offset-1" >
+
+    @*kutu0*@
+    @foreach (Liked note in Model)
+    {
+
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="thumbnail">
+                <img src="~/images/Notes/@note.Note.ImagePath" alt="@note.Note.Title">
+                <div class="caption">
+                    <h4>
+                        <a href="#">@*@note.Note.Title*@ @("Kontrol ID: "+note.Note.Id)</a>
+                    </h4>
+                    <h6>
+                        @(note.Note.Owner.Name + " " + note.Note.Owner.Surname)<br />@*patates*@
+                        @note.Note.ModifiedOn.ToString("dd.MM.yyyy")
+                    </h6>
+                    @if (string.IsNullOrEmpty(note.Note.Text) == false && note.Note.Text.Length > 60)
+                    {
+                        <p>@(note.Note.Text.Substring(0, 56) + " ..." )</p>
+                                    @*<p><a href="#" class="btn btn-sm btn-default bottom-left pull-left">Tamamını Oku<span class="glyphicon glyphicon-chevron-right"></span></a></p>*@
+                        //buton
+                        <button type="button" class="btn btn-sm btn-default " data-toggle="modal" data-target="@( string.Format("#myModel_{0}", note.Id))">
+                            Devamını oku
+                        </button>
+                        //model
+                        <div class="modal fade" id="@( string.Format("myModel_{0}", note.Id))" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h2 class="modal-title" id="myModalLabel">@note.Note.Title</h2>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>@note.Note.Text</p>
+                                        <hr />
+                                        <div class="panel-body">
+                                            @foreach (Comment com in note.Note.Comments)
+                                            {
+                                                <p>@(com.Text)</p>
+                                                            <hr />
+                                            }
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Yorum...">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-default" type="button">Yorum Yap</button>
+                                                        </span>
+                                                    </div><!-- /input-group -->
+                                                </div><!-- /.col-lg-6 -->
+                                            </div><!-- /.row -->
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @note.Note.Text
+                    }
+
+                </div>
+                <div class="ratings">
+                    <button class="btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-comment">Yorumlar</span></button>
+                    <p>
+                        <button class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-star">@note.Note.LikeCount</span></button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+
+</div>

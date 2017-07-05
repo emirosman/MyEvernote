@@ -1,7 +1,7 @@
 ﻿@model MyEvernote.Entities.Note
 
 @{
-    Layout = null;
+    
 }
 
 <!DOCTYPE html>
@@ -38,7 +38,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.TextAreaFor(model => model.Text, 5, 30, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -77,29 +77,7 @@
                 </div>
             </div>
     
-            <div class="form-group">
-                @Html.LabelFor(model => model.CratedOn, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.CratedOn, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.CratedOn, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.ModifiedOn, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ModifiedOn, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ModifiedOn, "", new { @class = "text-danger" })
-                </div>
-            </div>
-    
-            <div class="form-group">
-                @Html.LabelFor(model => model.ModifiedUsername, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.ModifiedUsername, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ModifiedUsername, "", new { @class = "text-danger" })
-                </div>
-            </div>
+            
     
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
