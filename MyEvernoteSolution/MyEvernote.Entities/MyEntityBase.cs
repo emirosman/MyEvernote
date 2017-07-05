@@ -16,7 +16,7 @@ namespace MyEvernote.Entities
         public DateTime CratedOn { get; set; }
         [Required]
         public DateTime ModifiedOn { get; set; }
-        [Required, StringLength(30)]
+        [StringLength(30)]
         public string ModifiedUsername { get; set; }
     }
 }

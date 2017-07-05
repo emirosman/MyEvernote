@@ -13,7 +13,7 @@ namespace MyEvernote.Entities
     {
         [Required,StringLength(50)]
         public string Title { get; set; }
-        [StringLength(150)]
+        [Required,StringLength(150)]
         public string Description { get; set; }
 
         public virtual List<Note> Notes { get; set; }

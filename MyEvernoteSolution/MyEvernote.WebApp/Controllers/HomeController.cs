@@ -1,6 +1,7 @@
 ﻿using MyEvernote.Entities;
 using MyEvernote.Entities.ValueObjects;
 using MyEvernoteBusinessLayer;
+using MyEvernoteBusinessLayer.Result;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ namespace MyEvernote.WebApp.Controllers
 {
     public class HomeController : Controller
     {
+        //new lenen satırları (managerlar) yukarı çekip tek tanımlamayla olayı kurtar
         // GET: Home
         public ActionResult Index()
         {
@@ -27,7 +29,7 @@ namespace MyEvernote.WebApp.Controllers
             //}
 
             NoteManager nm = new NoteManager();
-            return View(nm.GetAllNote().OrderByDescending(x => x.ModifiedOn).ToList());//orderby kısmını c# üstlenir
+            return View(nm.ListQueryable().OrderByDescending(x => x.ModifiedOn).ToList());//orderby kısmını c# üstlenir
             //return View(nm.GetAllNoteQueryable().OrderByDescending(x => x.ModifiedOn).ToList());//orderby kısmını sql yapar sorgu to.list dendiğinde çalıştırılır
         }
         public ActionResult ByCategory(int? id)
@@ -37,7 +39,7 @@ namespace MyEvernote.WebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             CategoryManager cm = new CategoryManager();
-            Category cat = cm.GetCategoryById(id.Value);
+            Category cat = cm.Find(x=>x.Id==id.Value);
             if (cat == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -48,7 +50,7 @@ namespace MyEvernote.WebApp.Controllers
         public ActionResult MostLiked()
         {
             NoteManager nm = new NoteManager();
-            return View("Index", nm.GetAllNote().OrderByDescending(x => x.LikeCount).ToList());
+            return View("Index", nm.ListQueryable().OrderByDescending(x => x.LikeCount).ToList());
         }
         public ActionResult About()
         {
@@ -154,31 +156,37 @@ namespace MyEvernote.WebApp.Controllers
         [HttpPost]
         public ActionResult EditProfile(EvernoteUser model,HttpPostedFileBase ProfileImage)//hata yok ama kayıtlar güncellenmiyo debug debug bak
         {
-            //resim yüklemesi
-               foreach(string upload in Request.Files)
-               {
-                   ProfileImage = Request.Files[upload];
-               }
-               if((ProfileImage != null) &&
-                       (ProfileImage.ContentType== "image/jpeg" ||
-                       ProfileImage.ContentType=="image/jpg"||
-                       ProfileImage.ContentType=="image/png"))
-               {
-                   string filename = $"user_{model.Id}.{ ProfileImage.ContentType.Split('/')[1]}";
-                   model.ProfileImageFilename = filename;
-                   string path = Path.Combine(Server.MapPath(("~/Images/Users/" + filename).ToString()));// başınsa / koyup dene!!!
-                   ProfileImage.SaveAs(path);
-               }
-            UserManager eum = new UserManager();
-            BusinessLayerResult<EvernoteUser> res = eum.UpdateProfile(model);
-            if(res.Errors.Count>0)
+            if (ModelState.IsValid)
             {
-                res.Errors.ForEach(x => ModelState.AddModelError("", x));
+                //resim yüklemesi
+                foreach (string upload in Request.Files)//silip tekrar dene
+                {
+                    ProfileImage = Request.Files[upload];
+                }
+                if ((ProfileImage != null) &&
+                        (ProfileImage.ContentType == "image/jpeg" ||
+                        ProfileImage.ContentType == "image/jpg" ||
+                        ProfileImage.ContentType == "image/png"))
+                {
+                    string filename = $"user_{model.Id}.{ ProfileImage.ContentType.Split('/')[1]}";
+                    model.ProfileImageFilename = filename;
+                    string path = Path.Combine(Server.MapPath(("~/Images/Users/" + filename).ToString()));// başınsa / koyup dene!!!
+                    ProfileImage.SaveAs(path);
+                }
+                UserManager eum = new UserManager();
+                BusinessLayerResult<EvernoteUser> res = eum.UpdateProfile(model);
+                if (res.Errors.Count > 0)
+                {
+                    res.Errors.ForEach(x => ModelState.AddModelError("", x));
+                    return View(model);
+                    //hata kodları gelicek
+                };
+                Session["login"] = res.Result;
+                return RedirectToAction("ShowProfile");
+            }
+            else
                 return View(model);
-                //hata kodları gelicek
-            };
-            Session["login"] = res.Result;
-            return RedirectToAction("ShowProfile");
+
 
         }
 

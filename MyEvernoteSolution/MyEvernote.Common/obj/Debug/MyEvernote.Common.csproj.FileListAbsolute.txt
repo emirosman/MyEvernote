@@ -3,3 +3,7 @@ C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernote.Common\bin\Debu
 C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernote.Common\bin\Debug\MyEvernote.Common.pdb
 C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernote.Common\obj\Debug\MyEvernote.Common.dll
 C:\Users\Emirosman\Desktop\mvc app\MyEvernoteSolution\MyEvernote.Common\obj\Debug\MyEvernote.Common.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Common\bin\Debug\MyEvernote.Common.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Common\bin\Debug\MyEvernote.Common.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Common\obj\Debug\MyEvernote.Common.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.Common\obj\Debug\MyEvernote.Common.pdb
