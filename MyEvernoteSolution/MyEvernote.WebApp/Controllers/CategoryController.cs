@@ -8,11 +8,15 @@ using System.Web;
 using System.Web.Mvc;
 using MyEvernote.Entities;
 using MyEvernoteBusinessLayer;
+using MyEvernoteBusinessLayer.Result;
 
 namespace MyEvernote.WebApp.Controllers
 {
     public class CategoryController : Controller
     {
+        BusinessLayerResult<Category> result = new BusinessLayerResult<Category>();
+        CategoryManager cm = new CategoryManager();
+
         private CategoryManager categorymanager = new CategoryManager();
 
         // GET: Category
@@ -21,7 +25,7 @@ namespace MyEvernote.WebApp.Controllers
             return View(categorymanager.List());
         }
 
-        // GET: Category/Details/5
+        // GET: Category/Details/5 
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -46,20 +50,22 @@ namespace MyEvernote.WebApp.Controllers
         // POST: Category/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create( Category category)//db de olan kategoriyi tekrar ekleyebiliyo kontrol et
+        public ActionResult Create(Category category)//db de olan kategoriyi tekrar ekleyebiliyo kontrol et
         {
+            
             if (ModelState.IsValid)
             {
-                //db.Categories.Add(category);
-                //db.SaveChanges();
-                categorymanager.Insert(category);
-                             
+                result = cm.create_cat(category);
+                if (result.Errors.Count > 0)
+                {
+                    result.Errors.ForEach(x => ModelState.AddModelError("", x));
+                    return View(category);
+                }
                 return RedirectToAction("Index");
             }
-
             return View(category);
-        }
 
+        }
         // GET: Category/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -80,12 +86,17 @@ namespace MyEvernote.WebApp.Controllers
         [HttpPost]
         public ActionResult Edit( Category category) //save de problem var !!!!
         {
+            //result ve cm yukarda tanımlandı
+            
             if (ModelState.IsValid)
             {
-                Category cat = categorymanager.Find(x => x.Id == category.Id);
-                cat.Title = category.Title;
-                cat.Description = category.Description;
-                categorymanager.Update(cat);
+                result = cm.update_cat(category);
+                if(result.Errors.Count>0)
+                {
+                    result.Errors.ForEach(x => ModelState.AddModelError("", x));//burda patlıyo olabilir???
+                    return View(category);
+
+                }
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -111,10 +122,19 @@ namespace MyEvernote.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Category category = categorymanager.Find(x => x.Id == id);
-            categorymanager.Delete(category);
-            return RedirectToAction("Index");
+            BusinessLayerResult<Category> result = new BusinessLayerResult<Category>();
+            Category delete_cat = categorymanager.Find(x => x.Id == id);
+            if(ModelState.IsValid)
+            {
+                categorymanager.delete_cat(delete_cat);
+                if(result.Errors.Count>0)
+                {
+                    result.Errors.ForEach(x => ModelState.AddModelError("", x));
+                    return View(delete_cat);
+                }
+                return RedirectToAction("Index");
+            }
+            return View(delete_cat);
         }
-
     }
 }

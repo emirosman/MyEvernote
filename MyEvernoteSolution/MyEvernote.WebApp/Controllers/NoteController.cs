@@ -136,8 +136,7 @@ namespace MyEvernote.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Note note = notemanager.Find(x => x.Id == id);
-            notemanager.Delete(note);
+            notemanager.remove_note(id);//hata kontrol koyulabilir
             return RedirectToAction("Index");
         }
 

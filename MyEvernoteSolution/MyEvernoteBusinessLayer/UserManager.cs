@@ -198,7 +198,7 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
                 }
             }
             List<Note> deleteNote = repo_note.List(x => x.Owner.Id == id);//kullanıcının notuysa sil
-            foreach (Note sil_note in deleteNote)
+            foreach (Note sil_note in deleteNote)//nota ait beğeniler yorumlar neoldu ????
             {
                 if(repo_note.Delete(sil_note)==0)
                 {

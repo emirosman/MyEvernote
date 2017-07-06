@@ -19,7 +19,7 @@
         <div class="form-horizontal">
         <h4>Category</h4>
         <hr />
-        @Html.ValidationSummary(true)@*false yaparsan hatalar yukarıda gözükücek şimdi her hata textboxın altında gözükücek*@
+        @Html.ValidationSummary(false)@*false yaparsan hatalar yukarıda gözükücek şimdi her hata textboxın altında gözükücek*@
         <div class="form-group">
             @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
