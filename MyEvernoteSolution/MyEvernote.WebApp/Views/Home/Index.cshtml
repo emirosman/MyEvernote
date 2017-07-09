@@ -1,5 +1,6 @@
 ﻿@using MyEvernote.Entities
 @model  List<Note>
+
 @*home index*@
 <!-- bütün sayfanın container ı -->
 <div class="container">
@@ -18,7 +19,7 @@
 
 
         <div class="col-md-9">
-            @* Carousel => tepede dönen zımbırtı*@
+            @* Carousel => tepede dönen zımbırtı***************************************************************************************@
             <div class="row carousel-holder">
 
                 <div class="col-md-12">
@@ -51,14 +52,14 @@
                 </div>
 
             </div>
-            @*Ekrandki Kutular*@
+            @*Ekrandki Kutular**********************************************************************************************************@
             <div class="row">
 
                 @*kutu0*@
                 @foreach (Note note in Model)
                 {
 
-                    <div class="col-sm-4 col-lg-4 col-md-4">
+                    <div class="col-sm-4 col-lg-4 col-md-4" data-note-id="@(note.Id)">
                         <div class="thumbnail">
                             <img src="~/images/Notes/@note.ImagePath" alt="@note.Title">
                             <div class="caption">
@@ -77,41 +78,56 @@
                                     <button type="button" class="btn btn-sm btn-default " data-toggle="modal" data-target="@( string.Format("#myModel_{0}", note.Id))">
                                         Devamını oku
                                     </button>
-                                    //model
+                                    //model popup****************************************************************
                                     <div class="modal fade" id="@( string.Format("myModel_{0}", note.Id))" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h2 class="modal-title" id="myModalLabel">@note.Title</h2> 
+                                                   
+                                                    <h2 class="modal-title" id="myModalLabel">@(note.Title)</h2>
+                                                    <h3>@note.Text</h3>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <p>@note.Text</p>
-                                                    <hr />
-                                                    <div class="panel-body">
-                                                        @foreach (Comment com in note.Comments)
-                                                        {
-                                                            <p>@(com.Text)</p>
-                                                            <hr />
-                                                        }
-                                                        <div class="row">                                                            
-                                                            <div class="col-lg-12">
-                                                                <div class="input-group">
-                                                                    <input type="text" class="form-control" placeholder="Yorum...">
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn btn-default" type="button">Yorum Yap</button>
-                                                                    </span>
-                                                                </div><!-- /input-group -->
-                                                            </div><!-- /.col-lg-6 -->
-                                                        </div><!-- /.row -->
+                                                @foreach (Comment com in note.Comments)
+                                                {
+                                                   <!--Yorum divinin başlangıcı **************************************************************-->
+                                                    <div class="row">
+                                                        <div class="modal-body">
+                                                            <div class="media col-md-12">
+                                                                <div class="media-left col-md-2">
 
+                                                                    <img class="media-object img-circle" src="~/images/Users/@(com.Owner.ProfileImageFilename)" alt="...">
 
+                                                                </div>
+                                                                <div class="media-right col-md-10">
+                                                                    <h4 class="media-heading">@(com.Owner.Name + " " + com.Owner.Surname)</h4>
+                                                                    @(com.Text)
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-
+                                                   <br />
+                                                
+                                                }
+                                                <!--Yorumlar bitişi -->
+                                                <!--textBox*********************************************************************************-->
+                                                <div class="modal-footer">
+                                                    @if(Session["login"]!=null){
+                                                    <div class="col-lg-8 col-md-offset-2">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" placeholder="Search for...">
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-default" type="button">Go!</button>
+                                                            </span>
+                                                        </div><!-- /input-group -->
+                                                    </div><!-- /.col-lg-6 -->
+                                                    }
                                                 </div>
+                                                <!--textbox bitiş-->
                                             </div>
                                         </div>
                                     </div>
+                                    //model bitiş
                                 }
                                 else
                                 {
@@ -119,11 +135,18 @@
                                 }
 
                             </div>
+                            
                             <div class="ratings">
                                 <button class="btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-comment">Yorumlar</span></button>
                                 <p>
-                                    <button class="btn btn-default btn-xs"> <span class="glyphicon glyphicon-star">@note.LikeCount</span></button>
+                                    <!--***********************beğeni göstermeyi htmlle yapmak çılgınlar gibi döngü yiyo AJAX şart**********************************************************************************-->
+                                  
+                                    <button class="btn btn-default btn-xs " data-liked="false" data-note-id="@(note.Id)"> 
+                                    <span class="glyphicon glyphicon-star-empty like-star"><span class="like-count">@note.LikeCount</span></span>
+                                    </button>
+                                    <!--benğileri listeleyince ne geliyo görmeli ekşınlar lazım-->
                                 </p>
+                              
                             </div>
                         </div>
                     </div>
@@ -139,3 +162,84 @@
     </div>
 
 </div>
+<script src="~/Scripts/jquery-3.1.1.min.js"></script>
+
+<script>
+    $(function () {
+        var noteids = [];
+        $("div[data-note-id]"//data-note-id attirbütü olan divleri getir
+        ).each(//hepsi için şu fonksiyonu dön /ilk parametre index ikincisi element yani div
+            function (i, e) {
+            noteids.push($(e).data("note-id"));//diziye bas => elementin datasından note-id olanı ???neden data-note-id yazmadık data() o işi görüyomu ??????????????????????????????????????????????????
+        });
+        console.log(noteids);//gelen diziyi konsola bas sileriz sonra 
+        $.ajax({//DB işleri işin ajax başlatıyoruz
+            method: "POST",
+            url: "/Note/GetLiked",//gidilicek controller
+            data: { ids: noteids }//Json verisi
+        }).done(function (data) {//datayla beğendiğim notlar döndü /result=list dendi fonksiyonun gönderildiği yerde//ajax gönderimi başarılıysa bu fonksiyon çalışıcak/ datanın tipi json ?????????????????????????????????????????????????????????????????????????????????????????????
+            if (data.result != null && data.result.length > 0) {//result int listesi ???????????????????????????????????????????????????????????????????????????????
+                for (var i = 0; i < data.result.length; i++) {
+                    var id = data.result[i];//beğendiğim notlar üstünde sırayla geziyorum
+                    var likedNote = $("div[data-note-id=" + id + "]");//divleri getirirken => data-note-id si şimdi çalıştığım ıd se getir 
+                    var btn = likedNote.find("button[data-liked]");//dataliked attirbütü olan butonu bul
+                    var span = btn.children().first();//butondan sonraki ilk spanı al
+                    btn.data("liked", true);//liked attirbütüne yeni değerini verdi
+                    span.removeClass("glyphicon-star-empty");//eski classı silip(boş yıldız)
+                    span.addClass("glyphicon-star")//yeni classı ekledi (dolu yıldız)
+                }
+            }
+        }).fail({//ajax başarısız olursa burayı çalıştırıcak
+
+        });
+
+        $("button[data-liked]").click(function () {
+            console.log("tıkladı");//tıkladıyı ekranda gmrebiliyoruz!
+            var btn = $(this);
+            var liked = btn.data("liked")//true false olması gerekmiyomu ??????????????????????????????????????????????????????????????
+            var noteid = btn.data("note-id");//divin id sini aldı
+            var spanStar = btn.find("span.like-star");
+            var spanCount = btn.find("span.like-count");
+            console.log(btn + " " + liked + " " + noteid);
+
+            $.ajax({
+                method: "POST",
+                url: "/Note/setLikeState",
+                data: {
+                    "noteid": noteid,
+                    "liked": !liked}//olan durumu değil yapmak istediğim durumu gönderiyorum
+                }).done(function (data) {
+                    if (data.hasError) {
+                        aler(data.errorMessage);
+                    }
+                    else {
+
+                        liked = !liked;//işaretlencek şekle çevrildi ?
+                        btn.data("liked", liked);//bildiğin eşitli şekle çevirsenmi ??
+                        spanCount.text(data.result);
+
+                        console.log(spanStar.text);
+                        spanStar.removeClass("glyphicon-star-empty");
+                        spanStar.removeClass("glyphicon-star");
+                        console.log("ajaxtan dönen= " + liked);
+
+                        if (liked) {
+                            spanStar.addClass("glyphicon-star");
+                        }
+                        else {
+                            spanStar.addClass("glyphicon-star-empty");
+                        }
+
+
+                    }
+                    //butona tıklandığını görüyo ama içerilerde bi hata var !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                }).fail(function () {
+                    alert("like bağlantı kuramadı");
+                })
+            
+                  
+        });
+
+    });
+
+</script>

@@ -145,5 +145,48 @@ namespace MyEvernote.WebApp.Controllers
             var like = lm.ListQueryable().Include("Note").Include("LikedUser").Where(x => x.LikedUser.Id == CurrentSession.user.Id);
             return View(like.ToList());
         }
+
+        public ActionResult GetLiked(int[] ids)
+        {
+            if (CurrentSession.user != null)
+            {
+            List<int> likedNoteIds = lm.List(x => x.LikedUser.Id == CurrentSession.user.Id && ids.Contains(x.Note.Id)).Select(x => x.Note.Id).ToList();
+            return Json(new { result = likedNoteIds });
+            }
+            return Json(new { result = "" });
+        }
+        [HttpPost]
+        public ActionResult setLikeState(int noteid, bool liked)
+        {
+            int res = 0;
+            Liked like = lm.Find(x => x.Note.Id == noteid && x.LikedUser.Id == CurrentSession.user.Id);
+            Note note = notemanager.Find(x => x.Id == noteid);
+            if(like != null && liked==false)
+            {
+                res=lm.Delete(like);
+            }
+            else if(like ==null && liked==true)
+            {
+                Liked newlike = new Liked(); 
+                newlike.Note = note;
+                newlike.LikedUser = CurrentSession.user;
+                res=lm.Insert(newlike);
+            }
+            if(res>0)
+            {
+                if(liked)
+                {
+                    note.LikeCount++;
+                }
+                else
+                {
+                    note.LikeCount--;
+                }
+                res = notemanager.Update(note);
+                return Json(new { hasError = false, errorMessage = string.Empty, result = note.LikeCount });
+            }
+
+            return Json(new { hasERror = true, errorMessage = "beğenme gerçekleşemedi", result = note.LikeCount });//işlem başarısız
+        }
     }
 }

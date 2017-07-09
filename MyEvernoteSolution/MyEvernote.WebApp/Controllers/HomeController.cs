@@ -204,5 +204,10 @@ namespace MyEvernote.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult indexdeneme()
+        {
+
+            return View();
+        }
     }
 }
