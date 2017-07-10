@@ -14,6 +14,7 @@ namespace MyEvernote.WebApp.Controllers
 {
     public class NoteController : Controller
     {
+        private CommentManager comm = new MyEvernoteBusinessLayer.CommentManager();
         private CategoryManager cm = new CategoryManager();
         private NoteManager notemanager = new NoteManager();
         private LikedManager lm = new LikedManager();
@@ -159,34 +160,64 @@ namespace MyEvernote.WebApp.Controllers
         public ActionResult setLikeState(int noteid, bool liked)
         {
             int res = 0;
-            Liked like = lm.Find(x => x.Note.Id == noteid && x.LikedUser.Id == CurrentSession.user.Id);
+            if (Session["login"] != null)
+            {
+                Liked like = lm.Find(x => x.Note.Id == noteid && x.LikedUser.Id == CurrentSession.user.Id);
+                Note note = notemanager.Find(x => x.Id == noteid);
+                if (like != null && liked == false)
+                {
+                    res = lm.Delete(like);
+                }
+                else if (like == null && liked == true)
+                {
+                    Liked newlike = new Liked();
+                    newlike.Note = note;
+                    newlike.LikedUser = CurrentSession.user;
+                    res = lm.Insert(newlike);
+                }
+                if (res > 0)
+                {
+                    if (liked)
+                    {
+                        note.LikeCount++;
+                    }
+                    else
+                    {
+                        note.LikeCount--;
+                    }
+                    res = notemanager.Update(note);
+                    return Json(new { hasError = false, errorMessage = string.Empty, result = note.LikeCount });
+                }
+            }
+            return Json(new { hasERror = true, errorMessage = "Like işlemi başarısız, Giriş yapın!" });//işlem başarısız
+        }
+
+        public ActionResult SendComment(int noteid, string comment)
+        {
+            int res = 0;
             Note note = notemanager.Find(x => x.Id == noteid);
-            if(like != null && liked==false)
-            {
-                res=lm.Delete(like);
-            }
-            else if(like ==null && liked==true)
-            {
-                Liked newlike = new Liked(); 
-                newlike.Note = note;
-                newlike.LikedUser = CurrentSession.user;
-                res=lm.Insert(newlike);
-            }
+            Comment new_com = new Comment();
+            new_com.Note = note;
+            new_com.Owner = CurrentSession.user;
+            //new_com.ModifiedUsername = CurrentSession.user.Username;
+            new_com.Text = comment;//boş geliyi ???
+            res=comm.Insert(new_com);
             if(res>0)
             {
-                if(liked)
+                return Json(new
                 {
-                    note.LikeCount++;
-                }
-                else
-                {
-                    note.LikeCount--;
-                }
-                res = notemanager.Update(note);
-                return Json(new { hasError = false, errorMessage = string.Empty, result = note.LikeCount });
-            }
+                    hasError = false,
+                    errorMessage = string.Empty,
+                    result_com = new_com.Text,
+                    result_name = (new_com.Owner.Name + " " + new_com.Owner.Surname),
+                    result_img= new_com.Owner.ProfileImageFilename
 
-            return Json(new { hasERror = true, errorMessage = "beğenme gerçekleşemedi", result = note.LikeCount });//işlem başarısız
-        }
+                });
+            }
+            else 
+            return Json(new { hasError=true,
+                    errorMesage="Yorum Yapılamadı!"
+            });
+        } 
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyEvernoteBusinessLayer
 {
-    class CommentManager:ManagerBase<Comment>
+    public class CommentManager:ManagerBase<Comment>
     {
     }
 }
