@@ -10,18 +10,10 @@
         <div class="col-md-3">
             @Html.Partial("_PartialCategories")
         </div>
-        @* <p class="lead">Kategori</p>
-            <div class="list-group">
-                <a href="#" class="list-group-item">Tümü</a>
-                <a href="#" class="list-group-item">Category 2</a>
-                <a href="#" class="list-group-item">Category 3</a>
-            </div>*@
-
 
         <div class="col-md-9">
             @* Carousel => tepede dönen zımbırtı***************************************************************************************@
             <div class="row carousel-holder">
-
                 <div class="col-md-12">
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                         @*carousel göstergeler ??alttaki yuvarlakçıklar ??*@
@@ -52,7 +44,7 @@
                 </div>
 
             </div>
-            @*Ekrandki Kutular**********************************************************************************************************@
+@*Note Box's Divs**********************************************************************************************************@
             <div class="row">
 
                 @*kutu0*@
@@ -60,12 +52,14 @@
                 {
 
                     <div class="col-sm-4 col-lg-4 col-md-4" data-note-id="@(note.Id)">
-                        <div class="thumbnail">
-                            <img src="~/images/Notes/@note.ImagePath" alt="@note.Title">
+                        <div class="thumbnail" id="note-div">
+                            <img src="~/Images/Notes/@(note.ImagePath)"  />
                             <div class="caption">
-                                <h4>
-                                    <a href="#">@note.Title</a>
-                                </h4>
+                                <a href="#">
+                                    <h4>
+                                        @note.Title
+                                    </h4>
+                                </a>
                                 <h6>
                                     @(note.Owner.Name + " " + note.Owner.Surname)<br />@*patates*@
                                     @note.ModifiedOn.ToString("dd.MM.yyyy")
@@ -84,10 +78,9 @@
                                             <div class="modal-content" yorum-id="@(note.Id)"><!--EN son burayı deniyoruzz !!!!!!!!!!!!!!!!!!!!!!!!1-->
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                   
                                                     <h2 class="modal-title" id="myModalLabel">@(note.Title)</h2>
-                                                    <h3>@note.Text</h3>
-                                                </div>
+                                                </div>                                                    <h3>@note.Text</h3>
+
                                                 @foreach (Comment com in note.Comments)
                                                 {
 <!--************************************Yorum divinin başlangıcı **************************************************************-->
@@ -95,9 +88,7 @@
                                                         <div class="modal-body">
                                                             <div class="media col-md-12"  >
                                                                 <div class="media-left col-md-2">
-
-                                                                    <img class="media-object img-circle" src="~/images/Users/@(com.Owner.ProfileImageFilename)" width="64" height="64" alt="...">@*clikten sonra sessiondan resim basılıcak*@
-
+                                                                    <img class="media-object img-circle" src="~/images/Users/@(com.Owner.ProfileImageFilename)" width="64" height="64" alt="...">
                                                                 </div>
                                                                 <div class="media-right col-md-10">
                                                                     <h4 class="media-heading">@(com.Owner.Name + " " + com.Owner.Surname)</h4>@*clikten sonra session isim soyisim basılıcak*@
@@ -106,11 +97,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                   <br />
-                                                
                                                 }
 <!--************************************Yorumlar bitişi *************************************************************************************-->
-
+                                                <div class="row">
+                                                    <div class="modal-body">
+                                                        <div id="yorum_deneme"></div>
+                                                    </div>
+                                                </div>
+                                                <br />
 <!--****************************************textBox*********************************************************************************-->
                                                 <div class="modal-footer">
                                                     @if(Session["login"]!=null){
@@ -138,9 +132,7 @@
                                 {
                                     @note.Text
                                 }
-
                             </div>
-                            
                             <div class="ratings">
                                 <button class="btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-comment">Yorumlar</span></button>
                                 <p>
@@ -151,26 +143,30 @@
                                     </button>
                                     <!--benğileri listeleyince ne geliyo görmeli ekşınlar lazım-->
                                 </p>
-                              
                             </div>
                         </div>
                     </div>
-
                 }
-
-
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 <script src="~/Scripts/jquery-3.1.1.min.js"></script>
 
 <script>
-    $(function () {
+    $(document).ready(function () {
+        $("div#note-div").hover(function () {
+            $(this).addClass("thumbborder");
+        }, function () {
+            $(this).removeClass("thumbborder");
+            });
+    });
+
+
+
+
+    ///////////////////////////////////
+    $(function () {        
         //******************Divleri yakala beğeni olanları işaretle******************************************************
         var noteids = [];
         $("div[data-note-id]"//data-note-id attirbütü olan divleri getir
@@ -195,7 +191,7 @@
                     span.addClass("glyphicon-star")//yeni classı ekledi (dolu yıldız)
                 }
             }
-        }).fail({//ajax başarısız olursa burayı çalıştırıcak
+            }).fail({//ajax başarısız olursa burayı çalıştırıcak
 
             });
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -208,7 +204,7 @@
             var noteid = btn.data("note-id");//divin id sini aldı
             var spanStar = btn.find("span.like-star");
             var spanCount = btn.find("span.like-count");
-            console.log(btn + " " + liked + " " + noteid);
+            console.log(btn + " " + liked + " " + noteid);     
 
             $.ajax({
                 method: "POST",
@@ -226,7 +222,6 @@
                         liked = !liked;//işaretlencek şekle çevrildi ?
                         btn.data("liked", liked);//bildiğin eşitli şekle çevirsenmi ??
                         spanCount.text(data.result);
-
                         console.log(spanStar.text);
                         spanStar.removeClass("glyphicon-star-empty");
                         spanStar.removeClass("glyphicon-star");
@@ -238,25 +233,22 @@
                         else {
                             spanStar.addClass("glyphicon-star-empty");
                         }
-
-
                     }
                     //butona tıklandığını görüyo ama içerilerde bi hata var !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 }).fail(function () {
                     alert("like bağlantı kuramadı");
                 })
-
-
         });
-//----------TEXTBOX BUTONUNUN CLİKC İ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------TEXTBOX BUTONUNUN CLİKCİ-----------ENTER İLE BAĞLA??-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         $("button[data-button-id]").click(function () {
             var btn = $(this);
             var noteid = btn.data("note-id");
             var comment = $("input[data-note-id=" + noteid + "]").val();
-            var modal = $("div[yorum-id=" + noteid + "]");//sadece 1 div almış olması lazım ama #1
-            var modalBody = "#modal-body";
+            comment = jQuery.trim(comment);
+            var yorum = "div#yorum_deneme";
             //("div[data-note-id=" + id + "]")
             console.log(comment);
+            $("input[textbox-id=" + noteid + "]").val("");
             //-----------------------------------------------
             $.ajax({
                 method: "POST",
@@ -264,25 +256,35 @@
                 data: {
                     "noteid": noteid,
                     "comment": comment
-                }//olan durumu değil yapmak istediğim durumu gönderiyorum
-            }).done(function (data) {
-                alert("ajax çalıştı");
-                modal.append(
-                    //###################################################################################
-                    "'<p>'bunu doğru yere yazdırmak lazım'</p>'"
-                        );
+                },//olan durumu değil yapmak istediğim durumu gönderiyorum
+                success: function (data) {
+                    if (data.errorMessage) {
+                        alert(data.errorMessage);
+                    }
+                    else {
 
-               //###################################################################################
-
-            }).fail(function () {
-                alert("ajax fail");
-            })
-            //----------------------------------------------------------
-
-
+                    var content = '';
+                    content += '';
+                    content += '<div class="media col-md-12">';
+                    content += '    <div class="media-left col-md-2">';
+                    content += '        <img alt="profilePicture" class="media-object img-circle profilePicture" src="/images/Users/' + data.result_img + '">';
+                    content += '    </div>';
+                    content += '    <div class="media-right col-md-10">';
+                    content += '        <h4 class="media-heading">' + data.result_name + '</h4>';
+                    content += '        ' + data.result_com + '';
+                    content += '    </div>';
+                    content += '</div>';
+                    $(yorum).append(content);
+                    }
+                },
+                error: function () {
+                    alert("ajax fail");
+                },
+                complete: function () {
+                    //alert("ajax bitirdi");
+                }
+            });
         });
-
-
     });
 
 </script>

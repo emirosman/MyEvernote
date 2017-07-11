@@ -194,6 +194,14 @@ namespace MyEvernote.WebApp.Controllers
 
         public ActionResult SendComment(int noteid, string comment)
         {
+            if (comment == "")
+            {
+                return Json(new
+                {
+                    hasError = true,
+                    errorMessage = "Yorum yazmadınız"
+                });
+            }
             int res = 0;
             Note note = notemanager.Find(x => x.Id == noteid);
             Comment new_com = new Comment();

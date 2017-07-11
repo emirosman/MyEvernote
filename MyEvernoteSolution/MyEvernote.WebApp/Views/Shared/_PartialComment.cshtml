@@ -1,0 +1,17 @@
+﻿@using MyEvernote.Entities
+@model List<Comment>
+
+@foreach (Comment com in Model)
+{
+
+<div class="media col-md-12">
+    <div class="media-left col-md-2">
+        <img class="media-object img-circle" src="~/images/Users/@(com.Owner.ProfileImageFilename)" width="64" height="64" alt="...">@*clikten sonra sessiondan resim basılıcak*@
+
+    </div>
+    <div class="media-right col-md-10">
+        <h4 class="media-heading">@(com.Owner.Name + " " + com.Owner.Surname)</h4>@*clikten sonra session isim soyisim basılıcak*@
+        @(com.Text)@*clickten sonra sessionun bu nota ait yorumu basılıcak*@
+    </div>
+</div>
+}

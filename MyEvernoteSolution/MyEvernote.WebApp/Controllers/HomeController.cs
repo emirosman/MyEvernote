@@ -32,6 +32,15 @@ namespace MyEvernote.WebApp.Controllers
             return View(nm.ListQueryable().OrderByDescending(x => x.ModifiedOn).ToList());//orderby kısmını c# üstlenir
             //return View(nm.GetAllNoteQueryable().OrderByDescending(x => x.ModifiedOn).ToList());//orderby kısmını sql yapar sorgu to.list dendiğinde çalıştırılır
         }
+
+        /// ///////////////////////////////////////////////////////
+        public ActionResult indexdeneme()
+        {
+            NoteManager nm = new NoteManager();
+            return View(nm.ListQueryable().OrderByDescending(x => x.ModifiedOn).ToList());//orderby kısmını c# üstlenir
+        }
+        ///////////////////////////////////////////////////////////
+
         public ActionResult ByCategory(int? id)
         {
             if (id == null)
@@ -202,12 +211,6 @@ namespace MyEvernote.WebApp.Controllers
             }
             Session.Clear();//silindiyse session ı boşalt
             return RedirectToAction("Index");
-        }
-
-        public ActionResult indexdeneme()
-        {
-
-            return View();
         }
     }
 }
