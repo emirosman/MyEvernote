@@ -10,7 +10,6 @@
         <div class="col-md-3">
             @Html.Partial("_PartialCategories")
         </div>
-
         <div class="col-md-9">
             @* Carousel => tepede dönen zımbırtı***************************************************************************************@
             <div class="row carousel-holder">
@@ -25,10 +24,11 @@
                         @*carousel resimleri*@
                         <div class="carousel-inner">
                             <div class="item active">
-
-                                <img class="slide-image" src="~/Images/Carousel/c1.jpg " alt="">                            </div>
+                                <img class="slide-image" src="~/Images/Carousel/c1.jpg " alt=""> 
+                            </div>
                             <div class="item">                                    
-                                <img class="slide-image" src="~/Images/Carousel/c2.jpg " alt="">                            </div>
+                                <img class="slide-image" src="~/Images/Carousel/c2.jpg " alt="">                            
+                            </div>
                             <div class="item">                                   
                                 <img class="slide-image" src="~/Images/Carousel/c3.jpg" alt="">
                             </div>
@@ -53,12 +53,17 @@
 
                     <div class="col-sm-4 col-lg-4 col-md-4" data-note-id="@(note.Id)">
                         <div class="thumbnail" id="note-div">
-                            <img src="~/Images/Notes/@(note.ImagePath)"  />
+                            <div class="owl-carousel owl-theme">
+                                <div><img  src="~/Images/Notes/@(note.ImagePath)" /></div>
+                                <div><img  src="~/Images/Notes/@(note.ImagePath)" /></div>
+                            </div>
+                            <!---------------------------------------------------->
                             <div class="caption">
                                 <a href="#">
-                                    <h4>
-                                        @note.Title
-                                    </h4>
+                                    @if (string.IsNullOrEmpty(note.Title) == false && note.Title.Length > 20)
+                                    { <h4>@(note.Title.Substring(0, 20) + " ...")</h4>}
+                                    else
+                                    {    <h4> @note.Title  </h4>}
                                 </a>
                                 <h6>
                                     @(note.Owner.Name + " " + note.Owner.Surname)<br />@*patates*@
@@ -67,38 +72,49 @@
                                 @if (string.IsNullOrEmpty(note.Text) == false && note.Text.Length > 60)
                                 {
                                     <p>@(note.Text.Substring(0, 56) + " ..." )</p>
-                                    @*<p><a href="#" class="btn btn-sm btn-default bottom-left pull-left">Tamamını Oku<span class="glyphicon glyphicon-chevron-right"></span></a></p>*@
-                                    //buton
-                                    <button type="button" class="btn btn-sm btn-default " data-toggle="modal" data-target="@( string.Format("#myModel_{0}", note.Id))">
-                                        Devamını oku
+                                }
+                                else
+                                {
+                                   <p>@note.Text </p>
+                                }
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-sm btn-default col-md-10 " data-toggle="modal" data-target="@( string.Format("#myModel_{0}", note.Id))">
+                                        <span class="glyphicon glyphicon-book "></span>
                                     </button>
-//*******************************MODEL POPUP*****************************************************************
+
+                                    <button class="btn btn-default btn-sm col-md-2 ratings" data-liked="false" data-note-id="@(note.Id)">
+                                        <span class="glyphicon glyphicon-star-empty like-star"><span class="like-count">@note.LikeCount</span></span>
+                                    </button>
+                                </div>
+@*******************************MODEL POPUP*****************************************************************@
                                     <div class="modal fade" id="@( string.Format("myModel_{0}", note.Id))" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
-                                            <div class="modal-content" yorum-id="@(note.Id)"><!--EN son burayı deniyoruzz !!!!!!!!!!!!!!!!!!!!!!!!1-->
-                                                <div class="modal-header">
+                                            <div class="modal-content" yorum-id="@(note.Id)">
+                                                <div class="modal-header col-md-12">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                     <h2 class="modal-title" id="myModalLabel">@(note.Title)</h2>
-                                                </div>                                                    <h3>@note.Text</h3>
+                                                    <div><img src="~/Images/Notes/@(note.ImagePath)" /></div>
+                                                    <h3>@note.Text</h3>
+                                                </div>
 
                                                 @foreach (Comment com in note.Comments)
                                                 {
-<!--************************************Yorum divinin başlangıcı **************************************************************-->
-                                                    <div class="row"  >
+                                                            <!--************************************Yorum divinin başlangıcı **************************************************************-->
+                                                    <div class="row">
                                                         <div class="modal-body">
-                                                            <div class="media col-md-12"  >
+                                                            <div class="media col-md-12">
                                                                 <div class="media-left col-md-2">
                                                                     <img class="media-object img-circle" src="~/images/Users/@(com.Owner.ProfileImageFilename)" width="64" height="64" alt="...">
                                                                 </div>
                                                                 <div class="media-right col-md-10">
                                                                     <h4 class="media-heading">@(com.Owner.Name + " " + com.Owner.Surname)</h4>@*clikten sonra session isim soyisim basılıcak*@
-                                                                    @(com.Text)@*clickten sonra sessionun bu nota ait yorumu basılıcak*@ 
+                                                                    @(com.Text)@*clickten sonra sessionun bu nota ait yorumu basılıcak*@
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 }
-<!--************************************Yorumlar bitişi *************************************************************************************-->
+                                                <!--************************************Yorumlar bitişi *************************************************************************************-->
                                                 <div class="row">
                                                     <div class="modal-body">
                                                         <div id="yorum_deneme"></div>
@@ -107,42 +123,28 @@
                                                 <br />
 <!--****************************************textBox*********************************************************************************-->
                                                 <div class="modal-footer">
-                                                    @if(Session["login"]!=null){
-                                                    <div class="col-lg-8 col-md-offset-2">
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" data-note-id="@(note.Id)" textbox-id="@(note.Id)" placeholder="Search for...">
-                                                            <span class="input-group-btn">
-                                                                <button class="btn btn-default" 
-                                                                        data-button-id="new-comment"  
-                                                                        data-note-id="@(note.Id)"  > @*<=denenebilir*@
-                                                                    Go!
-                                                                </button>@*bu butonun click eventini alıcaz*@
-                                                            </span>
-                                                        </div><!-- /input-group -->
-                                                    </div><!-- /.col-lg-6 -->
+                                                    @if (Session["login"] != null)
+                                                    {
+                                                        <div class="col-lg-8 col-md-offset-2">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" data-note-id="@(note.Id)" textbox-id="@(note.Id)" placeholder="Search for...">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default"
+                                                                            data-button-id="new-comment"
+                                                                            data-note-id="@(note.Id)">
+                                                                        @*<=denenebilir*@
+                                                                        Go!
+                                                                    </button>@*bu butonun click eventini alıcaz*@
+                                                                </span>
+                                                            </div><!-- /input-group -->
+                                                        </div><!-- /.col-lg-6 -->
                                                     }
                                                 </div>
 <!--*******************************textbox bitiş*************************************************************************************-->
                                             </div>
                                         </div>
                                     </div>
-                                    //model bitiş
-                                }
-                                else
-                                {
-                                    @note.Text
-                                }
-                            </div>
-                            <div class="ratings">
-                                <button class="btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-comment">Yorumlar</span></button>
-                                <p>
-                                    <!--***********************beğeni göstermeyi htmlle yapmak çılgınlar gibi döngü yiyo AJAX şart**********************************************************************************-->
-                                  
-                                    <button class="btn btn-default btn-xs " data-liked="false" data-note-id="@(note.Id)"> 
-                                    <span class="glyphicon glyphicon-star-empty like-star"><span class="like-count">@note.LikeCount</span></span>
-                                    </button>
-                                    <!--benğileri listeleyince ne geliyo görmeli ekşınlar lazım-->
-                                </p>
+ @*--------------------------------Modal Finsih--------------------------------------*@
                             </div>
                         </div>
                     </div>
@@ -151,29 +153,35 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/jquery-3.1.1.min.js"></script>
 
 <script>
-    $(document).ready(function () {
+    $(function () {
+//-------------------------Note Carousel & Border--------------------------------------------------------------------------
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            items: 1,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            autoplayTimeout: 1500,
+            autoplayHoverPause: false
+            
+        });
+        owl.trigger('stop.owl.autoplay');
         $("div#note-div").hover(function () {
             $(this).addClass("thumbborder");
+            $(this).find('.owl-carousel').trigger('play.owl.autoplay', [1000]);
         }, function () {
             $(this).removeClass("thumbborder");
-            });
-    });
-
-
-
-
-    ///////////////////////////////////
-    $(function () {        
-        //******************Divleri yakala beğeni olanları işaretle******************************************************
+            $(this).find('.owl-carousel').trigger('stop.owl.autoplay');
+        });
+//******************Divleri Yakala Beğeni Olanları İşaretle******************************************************
         var noteids = [];
         $("div[data-note-id]"//data-note-id attirbütü olan divleri getir
         ).each(//hepsi için şu fonksiyonu dön /ilk parametre index ikincisi element yani div
             function (i, e) {
-            noteids.push($(e).data("note-id"));//diziye bas => elementin datasından note-id olanı ???neden data-note-id yazmadık data() o işi görüyomu ??????????????????????????????????????????????????
-        });
+                noteids.push($(e).data("note-id"));//diziye bas => elementin datasından note-id olanı ???neden data-note-id yazmadık data() o işi görüyomu ??????????????????????????????????????????????????
+            });
         console.log(noteids);//gelen diziyi konsola bas sileriz sonra
         $.ajax({//DB işleri işin ajax başlatıyoruz
             method: "POST",
@@ -191,55 +199,53 @@
                     span.addClass("glyphicon-star")//yeni classı ekledi (dolu yıldız)
                 }
             }
-            }).fail({//ajax başarısız olursa burayı çalıştırıcak
+        }).fail({//ajax başarısız olursa burayı çalıştırıcak
 
-            });
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        //**************************like ların clicklerini yakala beğeni yap yada geri çek ************************************************************
+        });
+//**************************like ların clicklerini yakala beğeni yap yada geri çek ************************************************************
         $("button[data-liked]").click(function () {
-           // console.log("tıkladı");//BURAYI GÖRÜP GÖRMEDİĞİNİN KONTROLÜ
+            // console.log("tıkladı");//BURAYI GÖRÜP GÖRMEDİĞİNİN KONTROLÜ
             var btn = $(this);
             var liked = btn.data("liked")//true false olması gerekmiyomu ??????????????????????????????????????????????????????????????
             var noteid = btn.data("note-id");//divin id sini aldı
             var spanStar = btn.find("span.like-star");
             var spanCount = btn.find("span.like-count");
-            console.log(btn + " " + liked + " " + noteid);     
+            //console.log(btn + " " + liked + " " + noteid);
 
             $.ajax({
                 method: "POST",
                 url: "/Note/setLikeState",
                 data: {
                     "noteid": noteid,
-                    "liked": !liked}//olan durumu değil yapmak istediğim durumu gönderiyorum
-            }).done(function (data) {
-                    if (data.errorMessage)
-                    {
-                        alert(data.errorMessage);
+                    "liked": !liked
+                }//olan durumu değil yapmak istediğim durumu gönderiyorum
+            }).done(function (data) {           //success ile değiştir!!!
+                if (data.hasError == true) {
+                    alert(data.errorMessage);
+                }
+                else {
+
+                    liked = !liked;//işaretlencek şekle çevrildi ?
+                    btn.data("liked", liked);//bildiğin eşitli şekle çevirsenmi ??
+                    spanCount.text(data.result);
+                    //console.log(spanStar.text);
+                    spanStar.removeClass("glyphicon-star-empty");
+                    spanStar.removeClass("glyphicon-star");
+                    //console.log("ajaxtan dönen= " + liked);
+
+                    if (liked) {
+                        spanStar.addClass("glyphicon-star");
                     }
                     else {
-
-                        liked = !liked;//işaretlencek şekle çevrildi ?
-                        btn.data("liked", liked);//bildiğin eşitli şekle çevirsenmi ??
-                        spanCount.text(data.result);
-                        console.log(spanStar.text);
-                        spanStar.removeClass("glyphicon-star-empty");
-                        spanStar.removeClass("glyphicon-star");
-                        console.log("ajaxtan dönen= " + liked);
-
-                        if (liked) {
-                            spanStar.addClass("glyphicon-star");
-                        }
-                        else {
-                            spanStar.addClass("glyphicon-star-empty");
-                        }
+                        spanStar.addClass("glyphicon-star-empty");
                     }
-                    //butona tıklandığını görüyo ama içerilerde bi hata var !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                }).fail(function () {
-                    alert("like bağlantı kuramadı");
-                })
+                }
+                //butona tıklandığını görüyo ama içerilerde bi hata var !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }).fail(function () {
+                alert("like bağlantı kuramadı");
+            })
         });
-//----------TEXTBOX BUTONUNUN CLİKCİ-----------ENTER İLE BAĞLA??-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //----------TEXTBOX BUTONUNUN CLİKCİ-----------ENTER İLE BAĞLA??-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         $("button[data-button-id]").click(function () {
             var btn = $(this);
             var noteid = btn.data("note-id");
@@ -263,18 +269,18 @@
                     }
                     else {
 
-                    var content = '';
-                    content += '';
-                    content += '<div class="media col-md-12">';
-                    content += '    <div class="media-left col-md-2">';
-                    content += '        <img alt="profilePicture" class="media-object img-circle profilePicture" src="/images/Users/' + data.result_img + '">';
-                    content += '    </div>';
-                    content += '    <div class="media-right col-md-10">';
-                    content += '        <h4 class="media-heading">' + data.result_name + '</h4>';
-                    content += '        ' + data.result_com + '';
-                    content += '    </div>';
-                    content += '</div>';
-                    $(yorum).append(content);
+                        var content = '';
+                        content += '';
+                        content += '<div class="media col-md-12">';
+                        content += '    <div class="media-left col-md-2">';
+                        content += '        <img alt="profilePicture" class="media-object img-circle profilePicture" src="/images/Users/' + data.result_img + '">';
+                        content += '    </div>';
+                        content += '    <div class="media-right col-md-10">';
+                        content += '        <h4 class="media-heading">' + data.result_name + '</h4>';
+                        content += '        ' + data.result_com + '';
+                        content += '    </div>';
+                        content += '</div>';
+                        $(yorum).append(content);
                     }
                 },
                 error: function () {

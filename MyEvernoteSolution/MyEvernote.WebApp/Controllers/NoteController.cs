@@ -162,13 +162,13 @@ namespace MyEvernote.WebApp.Controllers
             int res = 0;
             if (Session["login"] != null)
             {
-                Liked like = lm.Find(x => x.Note.Id == noteid && x.LikedUser.Id == CurrentSession.user.Id);
+                Liked like = lm.Find(x => x.Note.Id == noteid && x.LikedUser.Id == CurrentSession.user.Id);//bu kişi bu notu likelamışmı??
                 Note note = notemanager.Find(x => x.Id == noteid);
-                if (like != null && liked == false)
+                if (like != null && liked == false)//daha önce likelanmış / sil
                 {
                     res = lm.Delete(like);
                 }
-                else if (like == null && liked == true)
+                else if (like == null && liked == true)// yeni like oluştur
                 {
                     Liked newlike = new Liked();
                     newlike.Note = note;
@@ -189,7 +189,7 @@ namespace MyEvernote.WebApp.Controllers
                     return Json(new { hasError = false, errorMessage = string.Empty, result = note.LikeCount });
                 }
             }
-            return Json(new { hasERror = true, errorMessage = "Like işlemi başarısız, Giriş yapın!" });//işlem başarısız
+            return Json(new { hasError = true, errorMessage = "Like işlemi başarısız, Giriş yapın!" });//sadece errorMessage döndürülüp count'u kontrol edilebilir ?
         }
 
         public ActionResult SendComment(int noteid, string comment)

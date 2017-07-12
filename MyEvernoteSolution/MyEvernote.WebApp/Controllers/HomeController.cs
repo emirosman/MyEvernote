@@ -168,10 +168,6 @@ namespace MyEvernote.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 //resim yüklemesi
-                foreach (string upload in Request.Files)//silip tekrar dene
-                {
-                    ProfileImage = Request.Files[upload];
-                }
                 if ((ProfileImage != null) &&
                         (ProfileImage.ContentType == "image/jpeg" ||
                         ProfileImage.ContentType == "image/jpg" ||

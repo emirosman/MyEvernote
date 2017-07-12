@@ -62,241 +62,136 @@
                 {
 
                     <div class="col-sm-4 col-lg-4 col-md-4" data-note-id="@(note.Id)">
-                        <div class="thumbnail">
-                            <img src="~/images/Notes/@note.ImagePath" alt="@note.Title">
-                            <img src="~/images/Notes/@note.ImagePath" alt="@note.Title">
-                            <div class="caption">
-                                <h4>
-                                    <a href="#">@note.Title</a>
-                                </h4>
-                                <h6>
-                                    @(note.Owner.Name + " " + note.Owner.Surname)<br />@*patates*@
-                                    @note.ModifiedOn.ToString("dd.MM.yyyy")
-                                </h6>
-                                @if (string.IsNullOrEmpty(note.Text) == false && note.Text.Length > 60)
-                                {
-                                    <p>@(note.Text.Substring(0, 56) + " ..." )</p>
-                                    @*<p><a href="#" class="btn btn-sm btn-default bottom-left pull-left">Tamamını Oku<span class="glyphicon glyphicon-chevron-right"></span></a></p>*@
-                                    //buton
-                                    <button type="button" class="btn btn-sm btn-default " data-toggle="modal" data-target="@( string.Format("#myModel_{0}", note.Id))">
-                                        Devamını oku
-                                    </button>
-                                    //*******************************MODEL POPUP*****************************************************************
-                                    <div class="modal fade" id="@( string.Format("myModel_{0}", note.Id))" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content" yorum-id="@(note.Id)">
-                                                <!--EN son burayı deniyoruzz !!!!!!!!!!!!!!!!!!!!!!!!1-->
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="thumbnail" id="note-div">
+                            <div class="owl-carousel">
+                                <div> <img src="~/images/Notes/resim1.jpg"></div>
+                                <div> <img src="~/images/Notes/resim4.jpg">  </div>
+                            </div>
+                                <div class="caption">
+                                    <h4>
+                                        <a href="#">@note.Title</a>
+                                    </h4>
+                                    <h6>
+                                        @(note.Owner.Name + " " + note.Owner.Surname)<br />@*patates*@
+                                        @note.ModifiedOn.ToString("dd.MM.yyyy")
+                                    </h6>
+                                    @if (string.IsNullOrEmpty(note.Text) == false && note.Text.Length > 60)
+                                    {
+                                        <p>@(note.Text.Substring(0, 56) + " ..." )</p>
+                                        @*<p><a href="#" class="btn btn-sm btn-default bottom-left pull-left">Tamamını Oku<span class="glyphicon glyphicon-chevron-right"></span></a></p>*@
+                                        //buton
+                                        <button type="button" class="btn btn-sm btn-default " data-toggle="modal" data-target="@( string.Format("#myModel_{0}", note.Id))">
+                                            Devamını oku
+                                        </button>
+                                        //*******************************MODEL POPUP*****************************************************************
+                                        <div class="modal fade" id="@( string.Format("myModel_{0}", note.Id))" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content" yorum-id="@(note.Id)">
+                                                    <!--EN son burayı deniyoruzz !!!!!!!!!!!!!!!!!!!!!!!!1-->
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
-                                                    <h2 class="modal-title" id="myModalLabel">@(note.Title)</h2>
-                                                    <h3>@note.Text</h3>
-                                                </div>
-                                                @foreach (Comment com in note.Comments)
-                                                {
+                                                        <h2 class="modal-title" id="myModalLabel">@(note.Title)</h2>
+                                                        <h3>@note.Text</h3>
+                                                    </div>
+                                                    @foreach (Comment com in note.Comments)
+                                                    {
                                                     <!--************************************Yorum divinin başlangıcı **************************************************************-->
-                                                    <div class="row">
-                                                        <div class="modal-body">
-                                                            <div class="media col-md-12">
-                                                                <div class="media-left col-md-2">
-                                                                    <img class="media-object img-circle profilePicture" src="~/images/Users/@(com.Owner.ProfileImageFilename)"  alt="profilePicture">@*clikten sonra sessiondan resim basılıcak*@
-                                                                </div>
-                                                                <div class="media-right col-md-10">
-                                                                    <h4 class="media-heading">@(com.Owner.Name + " " + com.Owner.Surname)</h4>@*clikten sonra session isim soyisim basılıcak*@
-                                                                    @(com.Text)@*clickten sonra sessionun bu nota ait yorumu basılıcak*@
+                                                        <div class="row">
+                                                            <div class="modal-body">
+                                                                <div class="media col-md-12">
+                                                                    <div class="media-left col-md-2">
+                                                                        <img class="media-object img-circle profilePicture" src="~/images/Users/@(com.Owner.ProfileImageFilename)" alt="profilePicture">@*clikten sonra sessiondan resim basılıcak*@
+                                                                    </div>
+                                                                    <div class="media-right col-md-10">
+                                                                        <h4 class="media-heading">@(com.Owner.Name + " " + com.Owner.Surname)</h4>@*clikten sonra session isim soyisim basılıcak*@
+                                                                        @(com.Text)@*clickten sonra sessionun bu nota ait yorumu basılıcak*@
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                }
-                                                <!--************************************Yorumlar bitişi *************************************************************************************-->
-                                                <div class="row">
-                                                    <div class="modal-body">
-                                                            <div id="yorum_deneme"></div>
-                                                    </div>
-                                                </div>
-
-                                                <br />
-                                                <!--****************************************textBox*********************************************************************************-->
-                                                <div class="modal-footer">
-                                                    @if (Session["login"] != null)
-                                                    {
-                                                        <div class="col-lg-8 col-md-offset-2">
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" data-note-id="@(note.Id)" textbox-id="@(note.Id)" placeholder="Search for...">
-                                                                <span class="input-group-btn">
-                                                                    <button class="btn btn-default"
-                                                                            data-button-id="new-comment"
-                                                                            data-note-id="@(note.Id)">
-                                                                        @*<=denenebilir*@
-                                                                        Go!
-                                                                    </button>@*bu butonun click eventini alıcaz*@
-                                                                </span>
-                                                            </div><!-- /input-group -->
-                                                        </div><!-- /.col-lg-6 -->
                                                     }
-                                                </div>
-                                                <!--*******************************textbox bitiş*************************************************************************************-->
-                                            </div>
-
+                                                    <!--************************************Yorumlar bitişi *************************************************************************************-->
+                                                    <div class="row">
+                                                        <div class="modal-body">
+                                                            <div id="yorum_deneme"></div>
+                                                        </div>
                                                     </div>
+
+                                                    <br />
+                                                    <!--****************************************textBox*********************************************************************************-->
+                                                    <div class="modal-footer">
+                                                        @if (Session["login"] != null)
+                                                        {
+                                                            <div class="col-lg-8 col-md-offset-2">
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" data-note-id="@(note.Id)" textbox-id="@(note.Id)" placeholder="Search for...">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn btn-default"
+                                                                                data-button-id="new-comment"
+                                                                                data-note-id="@(note.Id)">
+                                                                            @*<=denenebilir*@
+                                                                            Go!
+                                                                        </button>@*bu butonun click eventini alıcaz*@
+                                                                    </span>
+                                                                </div><!-- /input-group -->
+                                                            </div><!-- /.col-lg-6 -->
+                                                        }
+                                                    </div>
+                                                    <!--*******************************textbox bitiş*************************************************************************************-->
                                                 </div>
-                                                //model bitiş
-                                                }
-                                                else
-                                                {
-                                                @note.Text
-                                                }
 
                                             </div>
+                                        </div>
+                                        //model bitiş
+                                    }
+                                    else
+                                    {
+                                        @note.Text
+                                    }
 
-                            <div class="ratings">
-                                <button class="btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-comment">Yorumlar</span></button>
-                                <p>
-                                    <!--***********************beğeni göstermeyi htmlle yapmak çılgınlar gibi döngü yiyo AJAX şart**********************************************************************************-->
+                                </div>
 
-                                    <button class="btn btn-default btn-xs " data-liked="false" data-note-id="@(note.Id)">
-                                        <span class="glyphicon glyphicon-star-empty like-star"><span class="like-count">@note.LikeCount</span></span>
-                                    </button>
-                                    <!--benğileri listeleyince ne geliyo görmeli ekşınlar lazım-->
-                                </p>
+                                <div class="ratings">
+                                    <button class="btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-comment">Yorumlar</span></button>
+                                    <p>
+                                        <!--***********************beğeni göstermeyi htmlle yapmak çılgınlar gibi döngü yiyo AJAX şart**********************************************************************************-->
 
+                                        <button class="btn btn-default btn-xs " data-liked="false" data-note-id="@(note.Id)">
+                                            <span class="glyphicon glyphicon-star-empty like-star"><span class="like-count">@note.LikeCount</span></span>
+                                        </button>
+                                        <!--benğileri listeleyince ne geliyo görmeli ekşınlar lazım-->
+                                    </p>
+                                </div>
                             </div>
-                        </div>
                     </div>
-
                 }
-
-
-
             </div>
-
         </div>
-
     </div>
-
 </div>
-<script type="text/javascript" src="~/Scripts/jquery-3.1.1.min.js"></script>
-<script type="text/javascript">
-    $(function () {
-        //******************Divleri yakala beğeni olanları işaretle******************************************************
-        var noteids = [];
-        $("div[data-note-id]"//data-note-id attirbütü olan divleri getir
-        ).each(//hepsi için şu fonksiyonu dön /ilk parametre index ikincisi element yani div
-            function (i, e) {
-                noteids.push($(e).data("note-id"));//diziye bas => elementin datasından note-id olanı ???neden data-note-id yazmadık data() o işi görüyomu ??????????????????????????????????????????????????
-            });
-        console.log(noteids);//gelen diziyi konsola bas sileriz sonra
-        $.ajax({//DB işleri işin ajax başlatıyoruz
-            method: "POST",
-            url: "/Note/GetLiked",//gidilicek controller
-            data: { ids: noteids }//Json verisi
-        }).done(function (data) {//datayla beğendiğim notlar döndü /result=list dendi fonksiyonun gönderildiği yerde//ajax gönderimi başarılıysa bu fonksiyon çalışıcak/ datanın tipi json ?????????????????????????????????????????????????????????????????????????????????????????????
-            if (data.result != null && data.result.length > 0) {//result int listesi ???????????????????????????????????????????????????????????????????????????????
-                for (var i = 0; i < data.result.length; i++) {
-                    var id = data.result[i];//beğendiğim notlar üstünde sırayla geziyorum
-                    var likedNote = $("div[data-note-id=" + id + "]");//divleri getirirken => data-note-id si şimdi çalıştığım ıd se getir
-                    var btn = likedNote.find("button[data-liked]");//dataliked attirbütü olan butonu bul
-                    var span = btn.children().first();//butondan sonraki ilk spanı al
-                    btn.data("liked", true);//liked attirbütüne yeni değerini verdi
-                    span.removeClass("glyphicon-star-empty");//eski classı silip(boş yıldız)
-                    span.addClass("glyphicon-star")//yeni classı ekledi (dolu yıldız)
-                }
-            }
-        }).fail({//ajax başarısız olursa burayı çalıştırıcak
+<script>
+    $(document).ready(function () {
 
+        var owl = $('.owl-carousel');
+        owl.owlCarousel({
+            items: 1,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            autoplayTimeout: 1000,
+            autoplayHoverPause: false
         });
-        //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        owl.trigger('stop.owl.autoplay');
 
-        //**************************like ların clicklerini yakala beğeni yap yada geri çek ************************************************************
-        $("button[data-liked]").click(function () {
-            // console.log("tıkladı");//BURAYI GÖRÜP GÖRMEDİĞİNİN KONTROLÜ
-            var btn = $(this);
-            var liked = btn.data("liked")//true false olması gerekmiyomu ??????????????????????????????????????????????????????????????
-            var noteid = btn.data("note-id");//divin id sini aldı
-            var spanStar = btn.find("span.like-star");
-            var spanCount = btn.find("span.like-count");
-            console.log(btn + " " + liked + " " + noteid);
-
-            $.ajax({
-                method: "POST",
-                url: "/Note/setLikeState",
-                data: {
-                    "noteid": noteid,
-                    "liked": !liked
-                }//olan durumu değil yapmak istediğim durumu gönderiyorum
-            }).done(function (data) {
-                if (data.errorMessage) {
-                    alert(data.errorMessage);
-                }
-                else {
-
-                    liked = !liked;//işaretlencek şekle çevrildi ?
-                    btn.data("liked", liked);//bildiğin eşitli şekle çevirsenmi ??
-                    spanCount.text(data.result);
-
-                    console.log(spanStar.text);
-                    spanStar.removeClass("glyphicon-star-empty");
-                    spanStar.removeClass("glyphicon-star");
-                    console.log("ajaxtan dönen= " + liked);
-
-                    if (liked) {
-                        spanStar.addClass("glyphicon-star");
-                    }
-                    else {
-                        spanStar.addClass("glyphicon-star-empty");
-                    }
-
-
-                }
-                //butona tıklandığını görüyo ama içerilerde bi hata var !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            }).fail(function () {
-                alert("like bağlantı kuramadı");
-            });
-        });
-
-        //----------TEXTBOX BUTONUNUN CLİKC İ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        $("button[data-button-id]").click(function () {
-            var btn = $(this);
-            var noteid = btn.data("note-id");
-            var comment = $("input[data-note-id=" + noteid + "]").val();
-            var modal = $("div[yorum-id=" + noteid + "]");//sadece 1 div almış olması lazım ama #1
-            var yorum = $("div#yorum_deneme");
-            //("div[data-note-id=" + id + "]")
-            console.log(comment);
-            //-----------------------------------------------
-
-            $.ajax({
-                method: "POST",
-                url: "/Note/SendComment",
-                data: {
-                    "noteid": noteid,
-                    "comment": comment
-                },//olan durumu değil yapmak istediğim durumu gönderiyorum
-                success: function (data) {
-                    //burası için boş bi div oluşturalım onu dolduralım ??
-
-                    var content = '';
-                    content += '';
-                    content += '<div class="media col-md-12">';
-                    content += '     <div class="media-left col-md-2">';
-                    content += '        <img alt="profilePicture" class="media-object img-circle profilePicture" src="/images/Users/' + data.result_img + '">';
-                    content += '     </div>';
-                    content += '     <div class="media-right col-md-10">';
-                    content += '        <h4 class="media-heading">' + data.result_name + '</h4>';
-                    content += '        ' + data.result_com + '';
-                    content += '    </div>';
-                    content += '</div>';
-
-                    $(yorum).append(content);
-                },
-                error: function () {
-                    alert("ajax fail");
-                },
-                complete: function () {
-                    alert("ajax bitirdi");
-                }
-            });
+        $("div#note-div").hover(function () {
+            $(this).addClass("thumbborder");
+            owl.trigger('play.owl.autoplay', [1000]);
+        }, function () {
+            $(this).removeClass("thumbborder");
+            owl.trigger('stop.owl.autoplay');
         });
     });
+
 </script>
+
