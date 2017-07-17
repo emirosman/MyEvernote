@@ -89,8 +89,21 @@ namespace MyEvernote.WebApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EvernoteUser evernoteUser)
+        public ActionResult Edit(EvernoteUser evernoteUser,bool reset)
         {
+            if (reset == true)
+            {
+                string newPass = FakeData.TextData.GetAlphaNumeric(6);
+                //newPass Mail At
+                evernoteUser.Password = um.encryption(newPass);
+            }
+            else
+            {
+                EvernoteUser passCarry = new EvernoteUser();
+                passCarry = um.Find(x => x.Id == evernoteUser.Id);
+                evernoteUser.Password = passCarry.Password;
+            }
+            ModelState.Remove("password"); 
             if (ModelState.IsValid)
             {
                 //user manager içindeki update kullanıldı çünkü bu kayıt daha önceden yapılmış uyarısı orda zaten veriliyodu burda tekrar yazmaya gerek yok

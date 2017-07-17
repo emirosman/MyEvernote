@@ -12,7 +12,8 @@ namespace MyEvernote.Entities
     {
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        //[DataType(DataType.Date, ErrorMessage = "olmuyorusa zorlama")]burası bi tık gugullanıcak
+        [Required(ErrorMessage = "{0} eskiden buralar hep dutluktu")]
         public DateTime CratedOn { get; set; }
         [Required]
         public DateTime ModifiedOn { get; set; }

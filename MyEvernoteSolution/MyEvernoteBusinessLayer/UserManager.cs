@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol et problem yoksa Insert yap
 {
@@ -40,7 +42,7 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
                 {
                     Username = data.username,
                     Email = data.email,
-                    Password = data.password,
+                    Password = encryption(data.password),
                     ActivateGuid=Guid.NewGuid(),// resim ekleyip tekrar dene  
                     ProfileImageFilename="user.png",
                     IsAdmin=false,
@@ -78,7 +80,7 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
             else//bilgilerde problem yoksa insert yapılıcak yer 
             {
                 layer_result.Result = Find(x => x.Email == data.Email && x.Username == data.Username);
-
+                data.Password = encryption(data.Password);
                 data.ActivateGuid = Guid.NewGuid();
                 if (data.ProfileImageFilename == null)
                     data.ProfileImageFilename = "user.png";
@@ -96,7 +98,8 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
         public BusinessLayerResult<EvernoteUser> LoginUser(LoginViewModel data)
         {
             BusinessLayerResult<EvernoteUser> layer_result = new BusinessLayerResult<EvernoteUser>();
-            layer_result.Result = Find(x => x.Username == data.username && x.Password == data.password);
+            string pass = encryption(data.password);
+            layer_result.Result = Find(x => x.Username == data.username && x.Password == pass);
 
             if (layer_result.Result != null)
             {
@@ -154,14 +157,20 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
                 //user.ProfileImageFilename = model.ProfileImageFilename;
                 //Update(user);
                 //update_result.Result =Find(x => x.Id == user.Id) ;
-                //////////////////////////////
+                ////////////////////////////////
+                //isactive ve isadmin silindi problem burdan çıkabilir?
+                ////////////////////////////////
                 user = Find(x => x.Id == model.Id);
                 user.Email = model.Email;
                 user.Username = model.Username;
                 user.IsActive = model.IsActive;
                 user.IsAdmin = model.IsAdmin;
                 user.Name = model.Name;
-                user.Password = model.Password;
+                if (user.Password != model.Password)
+                {
+                    string newPass = encryption(model.Password);
+                    user.Password = newPass;
+                }
                 user.ProfileImageFilename = model.ProfileImageFilename;
                 user.Surname = model.Surname;
                 Update(user);
@@ -221,7 +230,18 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
             }
             return res;
         }
-
+         public string encryption (string password)
+        {
+            byte[] byteData = Encoding.ASCII.GetBytes(password);
+            MD5 passMD5 = MD5.Create();
+            byte[] hashData = passMD5.ComputeHash(byteData);
+            StringBuilder passSB = new StringBuilder();
+            for(int i=0;i<hashData.Length;i++)
+            {
+                passSB.Append(hashData[i].ToString("x2"));//x2???
+            }
+            return passSB.ToString();
+        }
 
     }
 }

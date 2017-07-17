@@ -62,6 +62,7 @@ namespace MyEvernote.WebApp.Controllers
             ModelState.Remove("CreatedOn");
             ModelState.Remove("ModifiedOn");
             ModelState.Remove("ModifiedUsername");
+            note.CratedOn = Convert.ToDateTime(note.Tarih);
             note.Owner = CurrentSession.user;
             if (note.ImagePath == null)//eklenicek defoultları insertin içinde toplamayı dene?????
                 note.ImagePath = "defoult.jpg";

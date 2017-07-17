@@ -23,7 +23,7 @@ namespace MyEvernote.Entities
         [StringLength(70), Required]
         public string Email { get; set; }
 
-        [StringLength(25),Required]
+        [Required]
         public string Password { get; set; }
 
         [StringLength(50)] 

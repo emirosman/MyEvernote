@@ -1,14 +1,18 @@
 ﻿using MyEvernote.Entities;
 using MyEvernote.Entities.ValueObjects;
+using MyEvernote.WebApp.Models;
 using MyEvernoteBusinessLayer;
 using MyEvernoteBusinessLayer.Result;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace MyEvernote.WebApp.Controllers
 {
@@ -36,12 +40,31 @@ namespace MyEvernote.WebApp.Controllers
         /// ///////////////////////////////////////////////////////
         public ActionResult indexdeneme()
         {
-            NoteManager nm = new NoteManager();
-            return View(nm.ListQueryable().OrderByDescending(x => x.ModifiedOn).ToList());//orderby kısmını c# üstlenir
+            NoteManager notemanager = new NoteManager();
+            var notes = notemanager.Find(x => x.Id == 1);
+            return View(notes);
+            //NoteManager nm = new NoteManager();
+            //return View(nm.ListQueryable().OrderByDescending(x => x.ModifiedOn).ToList());//orderby kısmını c# üstlenir
         }
-        ///////////////////////////////////////////////////////////
+        [HttpPost]
+        public ActionResult indexdeneme(string pas)//dd.mm.yy
+        {
+            byte[] byteData = Encoding.ASCII.GetBytes(pas);
+            MD5 pasMD5 = MD5.Create();
+            byte[] hashData = pasMD5.ComputeHash(byteData);
+            StringBuilder passSB = new StringBuilder();
+            for (int i = 0; i<hashData.Length ; i++)
+            {
+                passSB.Append(hashData[i].ToString("x2"));
+            }
 
-        public ActionResult ByCategory(int? id)
+            ViewBag.pas = passSB.ToString();
+            return View();
+
+        }
+            ///////////////////////////////////////////////////////////
+
+            public ActionResult ByCategory(int? id)
         {
             if (id == null)
             {
@@ -179,6 +202,7 @@ namespace MyEvernote.WebApp.Controllers
                     ProfileImage.SaveAs(path);
                 }
                 UserManager eum = new UserManager();
+                model.IsActive = true;//profilimi düzenle sayfasına giriyosa aktiftir zaten kotnrol yapmaya gerek yok//Profili Sil Diye bi checkbox konulup orası kontol ettirilebilir belki
                 BusinessLayerResult<EvernoteUser> res = eum.UpdateProfile(model);
                 if (res.Errors.Count > 0)
                 {

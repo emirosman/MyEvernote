@@ -19,6 +19,7 @@ namespace MyEvernote.Entities
         public int LikeCount { get; set; }
         public int CategoryId { get; set; }
         public string ImagePath { get; set; }
+        public string Tarih { get; set; }
 
         public virtual EvernoteUser Owner { get; set; }
         public virtual List<Comment> Comments { get; set; }

@@ -126,3 +126,5 @@ C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\bin\MyEv
 C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\bin\FakeData.pdb
 C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\obj\Debug\MyEvernote.WebApp.dll
 C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\obj\Debug\MyEvernote.WebApp.pdb
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\bin\JQueryUIHelpers.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\bin\JQueryUIHelpers.xml

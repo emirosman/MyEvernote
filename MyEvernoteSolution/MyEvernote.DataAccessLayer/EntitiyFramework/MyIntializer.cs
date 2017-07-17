@@ -1,17 +1,30 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using MyEvernote.Entities;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace MyEvernote.DataAccessLayer.EntityFramework
 {
     public class MyIntializer:CreateDatabaseIfNotExists<DatabaseContext>
     {
+        public string encryption(string password)//sadece intializer için oluşturuldu intializerda business layerda yazılabilir!
+        {
+            byte[] byteData = Encoding.ASCII.GetBytes(password);
+            MD5 passMD5 = MD5.Create();
+            byte[] hashData = passMD5.ComputeHash(byteData);
+            StringBuilder passSB = new StringBuilder();
+            for (int i = 0; i < hashData.Length; i++)
+            {
+                passSB.Append(hashData[i].ToString("x2"));//x2???
+            }
+            return passSB.ToString();
+        }
+
         protected override void Seed(DatabaseContext context)
         {
             EvernoteUser admin = new EvernoteUser()
@@ -23,7 +36,7 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
                 IsActive = true,
                 IsAdmin = true,
                 Username = "emirosman",
-                Password = "123456",
+                Password = encryption("123456"),
                 ProfileImageFilename="user.png",
                 CratedOn = DateTime.Now,
                 ModifiedOn = DateTime.Now.AddMinutes(5),
@@ -39,7 +52,7 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
                 IsActive = true,
                 IsAdmin = false,
                 Username = "fake",
-                Password = "123456",
+                Password = encryption("123456"),
                 ProfileImageFilename = "user.png",
                 CratedOn = DateTime.Now,
                 ModifiedOn = DateTime.Now.AddMinutes(8),
@@ -59,7 +72,7 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
                     IsAdmin = false,
                     Username = $"fake{i}",
                     ProfileImageFilename = "user.png",
-                    Password = "123456",
+                    Password = encryption("123456"),
                     CratedOn = FakeData.DateTimeData.GetDatetime(DateTime.Now.AddYears(-1), DateTime.Now),
                     ModifiedOn = FakeData.DateTimeData.GetDatetime(DateTime.Now.AddYears(-1), DateTime.Now),
                     ModifiedUsername = $"fake{i}"
@@ -78,7 +91,7 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
                 IsActive = true,
                 IsAdmin = false,
                 Username = "delete",
-                Password = "123456",
+                Password = encryption("123456"),
                 ProfileImageFilename = "user.png",
                 CratedOn = DateTime.Now,
                 ModifiedOn = DateTime.Now.AddMinutes(8),

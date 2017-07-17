@@ -42,9 +42,9 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
 
             if(obj is MyEntityBase)
             {
-                MyEntityBase o = obj as MyEntityBase;// şu yapı kafa karıştırdı
-
-                o.CratedOn = DateTime.Now;//her yerde aynı şeyi yazmamak için otomatikleştirildi 
+                MyEntityBase o = obj as MyEntityBase;
+                if (o.CratedOn ==  DateTime.MinValue)
+                { o.CratedOn = DateTime.Now; }//her yerde aynı şeyi yazmamak için otomatikleştirildi 
                 o.ModifiedOn = DateTime.Now;
                 o.ModifiedUsername = App.Common.GetUsername();
             }

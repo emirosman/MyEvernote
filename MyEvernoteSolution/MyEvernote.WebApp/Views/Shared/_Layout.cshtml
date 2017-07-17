@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,6 +20,8 @@
     <!--Carousel JS-->
     <script src="~/Scripts/jquery.min.js"></script>
     <script src="~/Scripts/owl.carousel.min.js"></script>
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <!-- jQuery -->
     @*<script src="~/Scripts/jquery-3.1.1.min.js"></script>*@
     <!-- Bootstrap Core JavaScript -->
@@ -51,7 +54,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 @*Navbar Başlığı*@
-                <a class="navbar-brand" href="/Home/Index">My EverNote</a>
+                <a class="navbar-brand" href="/Home/Index">BIKE ICON</a>
             </div>
             <!-- Navbarın içini doldur -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -63,30 +66,30 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Yönetim <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/Note/Create"><span class="glyphicon glyphicon-plus"></span>Not Ekle</a></li>
-                                <li><a href="/Note/Index"><span class="glyphicon glyphicon-list"></span>Notlarım</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="/Note/LikeIndex"><span class="glyphicon glyphicon-heart"></span>Beğeniler</a></li>
+                                <li><a href="/Note/Create"><span ><i class="glyphicon glyphicon-plus"></i></span><span class="headSpan">Not Ekle</span></a></li>
+                                <li><a href="/Note/Index"><span><i class="glyphicon glyphicon-list"></i></span><span class="headSpan">Notlarım</span></a></li>
+                                <li class="divider"></li>
+                                <li><a href="/Note/LikeIndex"><span><i class="glyphicon glyphicon-heart"></i></span><span class="headSpan">Beğeniler</span></a></li>
                                 @if (user.IsAdmin)
                                 {
                                 <li role="separator" class="divider"></li>
-                                <li><a href="/User/Index"><span class="glyphicon glyphicon-user"></span>Kullanıcılar</a></li>
+                                <li><a href="/User/Index"><span><i class="glyphicon glyphicon-user"></i></span><span class="headSpan">Kullanıcılar</span></a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="/Category/Create"><span class="glyphicon glyphicon-plus-sign"></span>Kategori Ekle</a></li>
-                                <li><a href="/Category/Index"><span class="glyphicon glyphicon-th-list"></span>Kategori Listele</a></li>
+                                <li><a href="/Category/Create"><span><i class="glyphicon glyphicon-sign"></i></span><span class="headSpan">Kategori Ekle</span></a></li>
+                                <li><a href="/Category/Index"><span><i class="glyphicon glyphicon-sign"></i></span><span class="headSpan">Kategori Listele</span></a></li>
                                 }
                             </ul>
                         </li>
 
                     }
                     <li>
-                        <a href="/Home/MostLiked"><span class="glyphicon glyphicon-star">En Beğenilen</span></a>
+                        <a href="/Home/MostLiked"><span><i class="glyphicon glyphicon-star"></i></span><span class="headSpan">En Beğenilenler</span></a>
                     </li>
                     <li>
-                        <a href="/Home/Index"> <span class="glyphicon glyphicon-pushpin">Son Yazılan</span></a>
+                        <a href="/Home/Index"><span><i class="glyphicon glyphicon-pushpin"></i></span><span class="headSpan">Son Yazılan</span></a>
                     </li>
                     <li>
-                        <a href="/Home/About"><span class="glyphicon glyphicon-info-sign">Hakkımızda</span></a>
+                        <a href="/Home/About"><span><i class="glyphicon glyphicon-sign"></i></span><span class="headSpan">Hakkımızda</span></a>
                     </li>
 
                 </ul>
@@ -94,17 +97,17 @@
                 <ul class="nav navbar-nav navbar-right">
                     @if(user==null)
                     {
-                    <li>
-                        <a href="/Home/Register"><span class="glyphicon glyphicon-plus">Üye Ol</span></a>
+                    <li >
+                        <a href="/Home/Register"><span><i class="glyphicon glyphicon-plus"></i></span><span class="headSpan">Üye Ol</span></a>
                     </li>
-                    <li>
-                        <a href="/Home/Login"><span class="glyphicon glyphicon-log-in">Giriş</span></a>
+                    <li >
+                        <a href="/Home/Login"><span><i class="glyphicon glyphicon-log-in"></i></span><span class="headSpan">Giriş</span></a>
                     </li>
                     }
                     else
                     {
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user">@(user.Name + " " + user.Surname)</span> <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user">@(user.Name + " " + user.Surname)<span class="caret"></span></span></a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="/Home/ShowProfile"><span class="glyphicon glyphicon-arrow-right">&nbsp;</span>Profili Gör</a>
