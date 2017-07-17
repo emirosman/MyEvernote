@@ -13,6 +13,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text;
 using System.Security.Cryptography;
+using System.Web.Helpers;
+using System.Net.Mail;
 
 namespace MyEvernote.WebApp.Controllers
 {
@@ -49,16 +51,28 @@ namespace MyEvernote.WebApp.Controllers
         [HttpPost]
         public ActionResult indexdeneme(string pas)//dd.mm.yy
         {
-            byte[] byteData = Encoding.ASCII.GetBytes(pas);
-            MD5 pasMD5 = MD5.Create();
-            byte[] hashData = pasMD5.ComputeHash(byteData);
-            StringBuilder passSB = new StringBuilder();
-            for (int i = 0; i<hashData.Length ; i++)
-            {
-                passSB.Append(hashData[i].ToString("x2"));
-            }
 
-            ViewBag.pas = passSB.ToString();
+            try
+            {
+                WebMail.SmtpServer = "smtp.gmail.com";
+                WebMail.EnableSsl = true;
+                WebMail.UserName = "m.emirosman@gmail.com";
+                WebMail.Password = "5348208314";
+                WebMail.SmtpPort = 587;
+                WebMail.Send(
+                    "m.emirosman@gmail.com",
+                    "konu",
+                    "<a href='https://github.com'><b>tıkla</b> </a>",
+                    "m.emirosman@gmail.com",null,null,true
+                    );
+                ViewBag.result = "Başarılı";
+                return View();
+            }
+            catch
+            {
+                ViewBag.result = "hata";
+            }
+            
             return View();
 
         }
@@ -133,15 +147,43 @@ namespace MyEvernote.WebApp.Controllers
                     res.Errors.ForEach(x => ModelState.AddModelError("", x));
                     return View(model);                  
                 }
-
+                ///////////////////////////////////////////////yönlendirmeler yapılıcak!tekrar mail gönder seçeneği eklenicek! aktif olan tekrar mail isteyemesin 
+                try
+                {
+                    WebMail.SmtpServer = "smtp.gmail.com";//mail atmalık hesap aç!
+                    WebMail.EnableSsl = true;
+                    WebMail.UserName = "m.emirosman@gmail.com";
+                    WebMail.Password = "5348208314";
+                    WebMail.SmtpPort = 587;
+                    WebMail.Send(
+                        /*"m.emirosman@gmail.com"*/res.Result.Email,
+                        "MyEvernote Aktivasyon",
+                        "<a href='http://localhost:51560/Home/Activated/"+res.Result.ActivateGuid+"'  ><b>tıkla</b> </a>",
+                        "m.emirosman@gmail.com", null, null, true
+                        );
+                    ViewBag.result = "Başarılı";
+                    return RedirectToAction("indexdeneme");
+                }
+                catch
+                {
+                    ViewBag.result = "hata";
+                }
 
                 return RedirectToAction("RegisterOk");
             }
-            //kullanıcı username kontrolü
-            //kullanıcı e posta kontrolü
-            //kayıt işlemi
+            
             //aktivasyon e postası
             return View(model);
+        }
+
+        public ActionResult Activated(Guid? id)//null gelme eşleşmeyen gelme kontrolleri yapılıcak
+        {
+            UserManager um = new UserManager();
+            EvernoteUser activatedUser = new EvernoteUser();
+            activatedUser = um.Find(x => x.ActivateGuid == id );
+            activatedUser.IsActive = true;
+            um.Update(activatedUser);
+            return RedirectToAction("indexdeneme");
         }
 
         public ActionResult RegisterOk()
@@ -153,13 +195,6 @@ namespace MyEvernote.WebApp.Controllers
         {
             Session.Clear();
             return  RedirectToAction("Index");
-        }
-
-        public ActionResult UserActivate(Guid activate_id)
-        {
-            //kullanıcı aktivasyonu
-            return View();
-
         }
 
         public ActionResult ShowProfile()
