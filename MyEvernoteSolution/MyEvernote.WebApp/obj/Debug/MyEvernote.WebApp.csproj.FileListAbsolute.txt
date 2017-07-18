@@ -128,3 +128,5 @@ C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\obj\Debu
 C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\obj\Debug\MyEvernote.WebApp.pdb
 C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\bin\JQueryUIHelpers.dll
 C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\bin\JQueryUIHelpers.xml
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\bin\GemBox.Spreadsheet.dll
+C:\Users\Emirosman\Desktop\mvc_app\MyEvernoteSolution\MyEvernote.WebApp\bin\GemBox.Spreadsheet.xml

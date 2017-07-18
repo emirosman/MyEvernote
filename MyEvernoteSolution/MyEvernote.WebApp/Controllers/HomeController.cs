@@ -15,6 +15,7 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Web.Helpers;
 using System.Net.Mail;
+using GemBox.Spreadsheet;
 
 namespace MyEvernote.WebApp.Controllers
 {
@@ -51,28 +52,11 @@ namespace MyEvernote.WebApp.Controllers
         [HttpPost]
         public ActionResult indexdeneme(string pas)//dd.mm.yy
         {
-
-            try
-            {
-                WebMail.SmtpServer = "smtp.gmail.com";
-                WebMail.EnableSsl = true;
-                WebMail.UserName = "m.emirosman@gmail.com";
-                WebMail.Password = "5348208314";
-                WebMail.SmtpPort = 587;
-                WebMail.Send(
-                    "m.emirosman@gmail.com",
-                    "konu",
-                    "<a href='https://github.com'><b>tıkla</b> </a>",
-                    "m.emirosman@gmail.com",null,null,true
-                    );
-                ViewBag.result = "Başarılı";
-                return View();
-            }
-            catch
-            {
-                ViewBag.result = "hata";
-            }
-            
+            SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");
+            var workbook = new ExcelFile();
+            var worksheet = workbook.Worksheets.Add("New Worksheet");
+            worksheet.Cells["A1"].Value = "Hello World";
+            workbook.Save("C:/Users/Emirosman/Desktop/mvc_app/MyEvernoteSolution/MyEvernote.WebApp/SpreadSheets/Hello.xls");
             return View();
 
         }
@@ -147,29 +131,60 @@ namespace MyEvernote.WebApp.Controllers
                     res.Errors.ForEach(x => ModelState.AddModelError("", x));
                     return View(model);                  
                 }
-                ///////////////////////////////////////////////yönlendirmeler yapılıcak!tekrar mail gönder seçeneği eklenicek! aktif olan tekrar mail isteyemesin 
+                ///////////////////////////////////////////////yönlendirmeler yapılıcak!tekrar mail gönder seçeneği eklenicek! aktif olan tekrar mail isteyemesin
                 try
-                {
-                    WebMail.SmtpServer = "smtp.gmail.com";//mail atmalık hesap aç!
-                    WebMail.EnableSsl = true;
-                    WebMail.UserName = "m.emirosman@gmail.com";
-                    WebMail.Password = "5348208314";
-                    WebMail.SmtpPort = 587;
-                    WebMail.Send(
-                        /*"m.emirosman@gmail.com"*/res.Result.Email,
-                        "MyEvernote Aktivasyon",
-                        "<a href='http://localhost:51560/Home/Activated/"+res.Result.ActivateGuid+"'  ><b>tıkla</b> </a>",
-                        "m.emirosman@gmail.com", null, null, true
-                        );
-                    ViewBag.result = "Başarılı";
-                    return RedirectToAction("indexdeneme");
+                {                                                                                                                                  
+                   SpreadsheetInfo.SetLicense("FREE-LIMITED-KEY");                                                                                 
+                   var workbook = new ExcelFile();                                                                                                 
+                   var worksheet = workbook.Worksheets.Add("Welcome");                                                                             
+                   worksheet.Cells["A1"].Value = "User Name";                                                                                      
+                   worksheet.Cells["A2"].Value = res.Result.Username;                                                                              
+                   worksheet.Cells["B1"].Value = "Mail";                                                                                           
+                   worksheet.Cells["B2"].Value = res.Result.Email;                                                                                 
+                   worksheet.Cells["C1"].Value = "Aktivasyon Linki";                                                                               
+                   worksheet.Cells["C2"].Value = "http://localhost:51560/Home/Activated/" + res.Result.ActivateGuid;                               
+                   workbook.Save("C:/Users/Emirosman/Desktop/mvc_app/MyEvernoteSolution/MyEvernote.WebApp/SpreadSheets/" + res.Result.Id+".xls");  
+                   /////excel oluşturucak bi yerde derli toplu bi hale gelsin//////////////////////////   
+                   
+                  // WebMail.SmtpServer = "smtp.gmail.com";//mail atmalık hesap aç!
+                  // WebMail.EnableSsl = true;
+                  // WebMail.UserName = "m.emirosman@gmail.com";
+                  // WebMail.Password = "5348208314";
+                  // WebMail.SmtpPort = 587;
+                    //sabit bi yerde oluşturulsun ////////////////////////////////
+
+                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                    SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("m.emirosman@gmail.com", "5348208314");
+                    MailMessage mail = new MailMessage();
+                    string fileName = "C:/Users/Emirosman/Desktop/mvc_app/MyEvernoteSolution/MyEvernote.WebApp/SpreadSheets/"+res.Result.Id+".xls";
+                    SmtpServer.EnableSsl = true;
+                    Attachment atch = new Attachment(fileName);
+                    mail.From =new MailAddress( "m.emirosman@gmail.com");
+                    mail.To.Add("m.emirosman@gmail.com" /*res.Result.Email*/);
+                    mail.Subject = "My Evernote Aktivasyon";
+                    mail.Body = "http://localhost:51560/Home/Activated/" + res.Result.ActivateGuid /*"<a href='http://localhost:51560/Home/Activated/" + res.Result.ActivateGuid + "'  ><b>tıkla</b> </a>"*/;
+                    mail.Attachments.Add(atch);
+                    SmtpServer.Send(mail);
+
+
+
+                    //WebMail.Send(
+                    //    /*"m.emirosman@gmail.com"*/res.Result.Email,
+                    //    "MyEvernote Aktivasyon",
+                    //    "<a href='http://localhost:51560/Home/Activated/"+res.Result.ActivateGuid+"'  ><b>tıkla</b> </a>",
+                    //    "m.emirosman@gmail.com", null,filesToAttach:atch , true
+                    //    );
+
+                    return RedirectToAction("RegisterOk");
+
                 }
                 catch
                 {
-                    ViewBag.result = "hata";
+                    return RedirectToAction("indexdeneme");
                 }
 
-                return RedirectToAction("RegisterOk");
+                
             }
             
             //aktivasyon e postası
@@ -178,15 +193,37 @@ namespace MyEvernote.WebApp.Controllers
 
         public ActionResult Activated(Guid? id)//null gelme eşleşmeyen gelme kontrolleri yapılıcak
         {
+            if (id == null)
+            {
+                //activate kodu yok
+            }
             UserManager um = new UserManager();
             EvernoteUser activatedUser = new EvernoteUser();
             activatedUser = um.Find(x => x.ActivateGuid == id );
-            activatedUser.IsActive = true;
-            um.Update(activatedUser);
-            return RedirectToAction("indexdeneme");
+            if (activatedUser == null)
+            {
+                //yanlış aktivasyon kodu
+                return View("index");
+            }
+            else if (activatedUser.IsActive == true)
+            {
+                //kullanıcı zaten aktifleştirilmiş
+                return View("index");
+            }
+            else
+            {
+                activatedUser.IsActive = true;
+                um.Update(activatedUser);
+                return RedirectToAction("ActivateOk");
+            }
         }
 
         public ActionResult RegisterOk()
+        {
+            return View();
+        }
+
+        public ActionResult ActivateOk()
         {
             return View();
         }

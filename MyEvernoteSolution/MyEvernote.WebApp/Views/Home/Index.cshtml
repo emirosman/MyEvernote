@@ -117,7 +117,7 @@
                                                         @foreach (Comment com in note.Comments)
                                                         {
                                                             <!--************************************Yorum divinin başlangıcı **************************************************************-->
-
+                                                            
                                                             <div class="media col-md-12">
                                                                 <div class="media-left col-md-2">
                                                                     <img class="media-object img-circle" src="~/images/Users/@(com.Owner.ProfileImageFilename)" width="64" height="64" alt="...">
@@ -129,17 +129,18 @@
                                                             </div>
 
                                                         }
+
+                                                        <!--************************************Yorumlar bitişi *************************************************************************************-->
+                                                        <div class="row">
+                                                            <div class="modal-body">
+                                                                <div id="yorum_deneme"></div>
+                                                            </div>
+                                                        </div>
+                                                        <br />
+                                                        <!--****************************************textBox*********************************************************************************-->
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--************************************Yorumlar bitişi *************************************************************************************-->
-                                            <div class="row">
-                                                <div class="modal-body">
-                                                    <div id="yorum_deneme"></div>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <!--****************************************textBox*********************************************************************************-->
                                             <div class="modal-footer">
                                                 @if (Session["login"] != null)
                                                 {

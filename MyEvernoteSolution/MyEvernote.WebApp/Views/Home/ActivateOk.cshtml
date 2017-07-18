@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "RegisterOk";
+}
+<link href="~/Content/Login-Register.css" rel="stylesheet" />
+<section class="login-info">
+    <div class="container">
+        <div class="row main">
+            <div class="form-header">
+                <h1 class="text-center ">Yönlendiriliyorsunuz... </h1>
+            </div>
+            <div class="main-content">
+                <div class="text-success">
+                    <h2><span class="glyphicon glyphicon-ok">Hesap Aktif Edildi</span></h2>
+                    <hr />
+                    <p class="text-justify"></p>
+                </div>
+            </div>
+        </div>
+</section>
+
+
+<script>
+    $(function () {
+        $("footer").parent().hide();
+        setTimeout(function () {
+            window.location = "/Home/Login"
+        }, 5000);
+    });
+</script>

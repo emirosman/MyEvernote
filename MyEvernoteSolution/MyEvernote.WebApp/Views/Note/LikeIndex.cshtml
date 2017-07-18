@@ -5,13 +5,6 @@
 }
 
 <h2>LikeIndex</h2>
-
-@foreach(Liked i in Model)
-{
-    <p>@(i.Note.Id)--@(i.Note.Title)</p>
-}
-
-
 <div class="row col-md-9 col-sm-offset-1" >
 
     @*kutu0*@
@@ -23,7 +16,7 @@
                 <img src="~/images/Notes/@note.Note.ImagePath" alt="@note.Note.Title">
                 <div class="caption">
                     <h4>
-                        <a href="#">@*@note.Note.Title*@ @("Kontrol ID: "+note.Note.Id)</a>
+                        <a href="#">@note.Note.Title</a>
                     </h4>
                     <h6>
                         @(note.Note.Owner.Name + " " + note.Note.Owner.Surname)<br />@*patates*@

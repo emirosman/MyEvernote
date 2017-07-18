@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
+
 namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol et problem yoksa Insert yap
 {
     public class UserManager: ManagerBase<EvernoteUser>
@@ -229,7 +230,7 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
             }
             return res;
         }
-         public string encryption (string password)
+        public string encryption (string password)
         {
             byte[] byteData = Encoding.ASCII.GetBytes(password);
             MD5 passMD5 = MD5.Create();
@@ -241,6 +242,7 @@ namespace MyEvernoteBusinessLayer//girilen kullanıcının bilgilerini kontrol e
             }
             return passSB.ToString();
         }
+       
 
     }
 }
